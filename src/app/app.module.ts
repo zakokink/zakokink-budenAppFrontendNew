@@ -4,11 +4,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AllTrainingEinheitenComponent } from './components/all-training-einheiten/all-training-einheiten.component';
+import { AllUsersComponent } from './components/all-users/all-users.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AllTrainingEinheitenComponent
+    AllTrainingEinheitenComponent,
+    AllUsersComponent
   ],
   imports: [
     BrowserModule,

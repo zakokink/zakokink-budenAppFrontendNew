@@ -1,1 +1,9 @@
 <p>all-training-einheiten works!</p>
+<p>Alle Trainingseinheiten fuer: {{trainingsEinheiten[0]?.user?.username}}</p>
+
+<div>
+  <div *ngFor="let element of trainingsEinheiten">
+    {{element.datum}}
+  </div>
+
+</div>
