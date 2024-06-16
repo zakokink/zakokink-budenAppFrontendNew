@@ -2,8 +2,18 @@
 <p>Alle Trainingseinheiten fuer: {{trainingsEinheiten[0]?.user?.username}}</p>
 
 <div>
-  <div *ngFor="let element of trainingsEinheiten">
-    {{element.datum}}
-  </div>
-
+  <div class="trainings-einheit" *ngFor="let element of trainingsEinheiten">
+    <div>Datum: {{element.datum}}</div>
+    <div class="einzelnes-set"><div class="einzelnes-set-element">Nr.</div><div class="einzelnes-set-element">Übung</div><div class="einzelnes-set-element">Gewicht</div><div class="einzelnes-set-element">Wiederholungen</div> <div class="einzelnes-set-element">Kommentar</div>  </div>
+    <div  *ngFor="let innerElement of element.trainingsSets; let elementIndex = index;" >
+      
+      <div class="einzelnes-set">
+        <div class="einzelnes-set-element">{{elementIndex+1}}</div>
+        <div class="einzelnes-set-element">{{innerElement.uebung?.name}}</div>
+        <div class="einzelnes-set-element">{{innerElement.gewicht}}</div>
+        <div class="einzelnes-set-element">{{innerElement.wiederholungen}}</div>
+        <div class="einzelnes-set-element">{{innerElement.comment}}</div>
+      </div>
+    </div>
+   </div>
 </div>

@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+
+.main-container {
+  padding-left: 1rem;
+}
+
+.app-container {
+  font-weight: 300;
+  min-height: 35rem;
+
+}
+
+.main-container{
+  max-width: 25rem;
+}
+
+.einzelnes-set {
+  display: grid;  
+  /* grid-template-columns: 1fr 6fr 2fr 2fr 5fr;   */
+  grid-template-columns: 3rem 16rem 6rem 12rem 10rem;
+  column-gap: 0.3rem;
+  padding-bottom: 0.5rem;
+}
