@@ -4,12 +4,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { AllTrainingEinheitenComponent } from './components/all-training-einheiten/all-training-einheiten.component';
 import { AllUsersComponent } from './components/all-users/all-users.component';
 import { NewUebungComponent } from './components/new-uebung/new-uebung.component';
+import { NewTrainingComponent } from './components/new-training/new-training.component';
 
 
 const routes: Routes = [
   {  path: 'alleTrainingseinheiten/:id', component: AllTrainingEinheitenComponent },
   {  path: 'allUsers', component: AllUsersComponent },
-  { path: 'newUebung', component: NewUebungComponent }
+  { path: 'newUebung', component: NewUebungComponent },
+  { path: 'newTraining/:id', component: NewTrainingComponent }
 ];
 
 @NgModule({

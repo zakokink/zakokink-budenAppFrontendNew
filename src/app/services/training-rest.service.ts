@@ -23,6 +23,20 @@ export class TrainingRestService {
     return this.http.post<Uebung>(this.API_URL + '/saveUebung', uebung);
   }
 
-  
+  public getAlleUebungen(): Observable<Uebung[]>{
+    return this.http.get<Uebung[]>(this.API_URL + '/getAllUebungen');
+  }
+
+  public getTrainingsEinheitDesHeutigenDatums(): Observable<TrainingsEinheit>{
+    return this.http.get<TrainingsEinheit>(this.API_URL + '/getTrainingsEinheitDesHeutigenDatums');
+  }
+
+  public getTrainingsEinheitDesHeutigenDatumsFuerUser(userId : number): Observable<TrainingsEinheit[]>{
+    return this.http.get<TrainingsEinheit[]>(this.API_URL + '/getTrainingsEinheitDesHeutigenDatumsFuerUser/' + userId);
+  }
+
+  public saveTrainingsEinheit(trainingsEinheit: TrainingsEinheit): Observable<TrainingsEinheit>{
+    return this.http.post<TrainingsEinheit>(this.API_URL + '/saveTrainingsEinheit', trainingsEinheit);
+  }
 
 }

@@ -7,13 +7,15 @@ import { AllTrainingEinheitenComponent } from './components/all-training-einheit
 import { AllUsersComponent } from './components/all-users/all-users.component';
 import { NewUebungComponent } from './components/new-uebung/new-uebung.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NewTrainingComponent } from './components/new-training/new-training.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AllTrainingEinheitenComponent,
     AllUsersComponent,
-    NewUebungComponent
+    NewUebungComponent,
+    NewTrainingComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,21 @@
+<div>
+  <div class="recept-title">Neues Training</div>
+  <div><button routerLink="../" class="btn btn-warning">Zurück</button></div>
+
+  <div class="new-recept-zutaten-container">
+    <form [formGroup]="formUebung">
+      <div>
+        <div><div>Übung</div><div>Gewicht</div><div>Wiederholungen</div><div>Kommentar</div></div>
+        <div *ngFor="let uebung of uebungenArray; let elementIndex = index;" class="new-recept-zutaten" >
+          <div><select class="select-box" name="uebungenMenu" (change)="addNewUebung(elementIndex)" formControlName="uebungName{{elementIndex}}">
+            <option value="" disabled selected>Bitte auswählen...</option>
+            <option *ngFor="let item of uebungenOptionen" value={{item.idUebung}}>{{item.name}}</option>
+          </select></div>          
+          <div><input class="form-control" type="text" (change)="addNewUebung(elementIndex)" id='{{elementIndex}}' formControlName='gewicht{{elementIndex}}'></div>
+          <div><input class="form-control" type="text" (change)="addNewUebung(elementIndex)" formControlName='wiederholungen{{elementIndex}}'></div>
+          <div><input class="form-control" type="text" (change)="addNewUebung(elementIndex)" formControlName='comment{{elementIndex}}'></div>
+        </div>
+      </div>
+    </form>
+
+</div>
