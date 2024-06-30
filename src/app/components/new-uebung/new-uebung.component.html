@@ -1,0 +1,30 @@
+<div>
+  <div class="recept-title">Neue Uebung</div>
+  <div><button routerLink="../" class="btn btn-warning">Zurück</button></div>
+  <div>
+    <form [formGroup]="uebungFormGroup">
+      <div>
+        <label>Name: </label><br/>
+        <input required class="mx-2" type="text" id="uebungName" formControlName="uebungName">
+      </div>
+      <div>
+        <label>Min Wiederholungen: </label><br/>
+        <input class="mx-2" id="uebungMinWiederholungen" type="text" id="uebungMinWiederholungen" formControlName="uebungMinWiederholungen">
+      </div>
+      <div>
+        <label>Max Wiederholungen: </label><br/>
+        <input class="mx-2" id="uebungMaxWiederholungen" type="text" id="uebungMaxWiederholungen" formControlName="uebungMaxWiederholungen">
+      </div>  
+      <div>
+        <label>Kommentar: </label><br/>
+        <input class="mx-2" id="gerichtZubereitung" type="text" id="uebungComment" formControlName="uebungComment">
+      </div> 
+
+      <div><button (click)="saveUebung()" class="btn btn-primary">Speichern</button></div>
+      
+    </form>
+
+
+
+  </div>
+</div>

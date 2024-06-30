@@ -1,9 +1,9 @@
 export class Uebung {
   idUebung : number | null = null;
-  name : string  | null = null;
+  name : string | null = null;
   comment : string  | null = null;
-  minWiederholungen : string  | null = null;
-  maxWiederholungen : string  | null = null;
+  minWiederholungen : number | null = null;
+  maxWiederholungen : number | null = null;
 }
 
 export class User {
@@ -24,4 +24,10 @@ export class TrainingsEinheit {
   datum : Date | null = null;
   user : User | null = null ;
   trainingsSets : TrainingsSet[] | null = null;
+}
+
+export class AkutellsteLeistung {
+  id: number | null = null;
+  gewicht: string | null = null;
+  wiederholungen: string | null = null;
 }
