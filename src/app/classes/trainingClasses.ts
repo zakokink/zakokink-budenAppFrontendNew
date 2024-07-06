@@ -12,6 +12,7 @@ export class User {
 }
 
 export class TrainingsSet {
+  id : number | null = null;
   idTrainingeinheit : number | null = null;
   uebung : Uebung | null = null;
   gewicht : string | null = null;
