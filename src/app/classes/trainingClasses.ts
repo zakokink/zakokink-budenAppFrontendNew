@@ -32,3 +32,6 @@ export class AkutellsteLeistung {
   gewicht: string | null = null;
   wiederholungen: string | null = null;
 }
+
+
+

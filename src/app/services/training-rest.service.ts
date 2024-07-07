@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TrainingsEinheit, Uebung, User } from '../classes/trainingClasses';
+import { AkutellsteLeistung, TrainingsEinheit, TrainingsSet, Uebung, User } from '../classes/trainingClasses';
 
 @Injectable({
   providedIn: 'root'
@@ -39,4 +39,11 @@ export class TrainingRestService {
     return this.http.post<TrainingsEinheit>(this.API_URL + '/saveTrainingsEinheit', trainingsEinheit);
   }
 
+  public deleteTrainingSet(trainingsEinheit: number, uebungsNumber: number){
+    return this.http.delete<TrainingsSet>(this.API_URL + '/deleteTrainingSetByTrainingsEinheitUndUebung/'+trainingsEinheit+'/'+uebungsNumber);
+  }
+
+  public getLatestGewichtForUebung(userId: number, uebungId: number) : Observable<AkutellsteLeistung> {
+    return this.http.get<AkutellsteLeistung>(this.API_URL + '/getLatestGewichtForUebung/' + userId + '/' + uebungId);
+  }     
 }

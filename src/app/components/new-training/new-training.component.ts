@@ -47,7 +47,6 @@ export class NewTrainingComponent implements OnInit {
               console.log('this.uebungenArray[i].uebung?.name!: ', this.uebungenArray[i].uebung?.name)
               let uebName : string = this.uebungenArray[i].uebung?.name!;
 
-              //this.formGericht.addControl('zutatName'+i, new FormControl(this.rezept.gerichtZutaten[i].zutat?.name),{});
               this.formUebung.addControl('uebungName'+i, new FormControl(uebName),{});
               this.formUebung.addControl('gewicht'+i, new FormControl(this.uebungenArray[i].gewicht),{});
               this.formUebung.addControl('wiederholungen'+i, new FormControl(this.uebungenArray[i].wiederholungen),{});
@@ -101,8 +100,8 @@ export class NewTrainingComponent implements OnInit {
 
       if(this.checkIfFieldsAreFilled(elementIndex) && this.trainingsEinheit != null){
         this.trainingsEinheit.trainingsSets = this.uebungenArray;
-        this.trainingRestService.saveTrainingsEinheit(this.trainingsEinheit).subscribe(data => {this.trainingsEinheit = data;
-      
+        if(!this.checkIfUebungenAreComplete(this.trainingsEinheit.trainingsSets)){ return; }
+        this.trainingRestService.saveTrainingsEinheit(this.trainingsEinheit).subscribe(data => {this.trainingsEinheit = data;      
       });
     
       }
@@ -157,16 +156,15 @@ export class NewTrainingComponent implements OnInit {
 
 
   saveBisherigeUebungenAndAddNewTrainingsSet(){
-
     if(this.trainingsEinheit != null && this.trainingsEinheit.idTrainingeinheit != null){
       this.uebungenArray.forEach(x => x.idTrainingeinheit = this.trainingsEinheit?.idTrainingeinheit!);
       this.trainingsEinheit.trainingsSets = this.uebungenArray;
-      this.trainingRestService.saveTrainingsEinheit(this.trainingsEinheit).subscribe(data => {this.trainingsEinheit = data;
-        this.uebungenArray.push(new TrainingsSet);
+      if(!this.checkIfUebungenAreComplete(this.trainingsEinheit.trainingsSets)){ return; }
+      this.trainingRestService.saveTrainingsEinheit(this.trainingsEinheit).subscribe(data => {      
+        this.trainingsEinheit = data;
+        this.uebungenArray.push(new TrainingsSet);        
       });
-    
     }
-    //this.trainingRestService.
   }
 
   createNewTrainingseinheit(){
@@ -176,6 +174,29 @@ export class NewTrainingComponent implements OnInit {
     this.trainingsEinheit.user = user;
     this.trainingRestService.saveTrainingsEinheit(this.trainingsEinheit).subscribe(data => {
       this.trainingsEinheit = data;
+      window.location.reload();
+//      this.router.navigate(['newTraining/'+this.userId]);
     });
+  }
+
+  checkIfUebungenAreComplete(trainingssetArray :TrainingsSet[] | null) : boolean {
+    if(trainingssetArray != null && trainingssetArray.length!>0){
+      let result  = trainingssetArray.filter(x => {x.uebung?.name == null || x.uebung?.name?.trim().length < 1})
+      if(result != null && result.length > 0){
+        return false;
+      }
+    }
+    return true;
+  }
+
+  deleteZutat(index : number){
+    //let trainingsSets : TrainingsSet[] = this.trainingsEinheit?.trainingsSets!;
+    let uebung : TrainingsSet = this.uebungenArray[index];
+
+    this.trainingRestService.deleteTrainingSet(this.trainingsEinheit!.idTrainingeinheit!, uebung.uebung?.idUebung!).subscribe(data => {
+      this.uebungenArray.splice(index, 1);
+      this.trainingsEinheit!.trainingsSets = this.uebungenArray;
+    });
+    
   }
 }
