@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TrainingsEinheit, TrainingsSet, Uebung, User } from 'src/app/classes/trainingClasses';
+import { AkutellsteLeistung, TrainingsEinheit, TrainingsSet, Uebung, User } from 'src/app/classes/trainingClasses';
 import { TrainingRestService } from 'src/app/services/training-rest.service';
 
 @Component({
@@ -12,6 +12,7 @@ import { TrainingRestService } from 'src/app/services/training-rest.service';
 export class NewTrainingComponent implements OnInit {
   formUebung: FormGroup;
   uebungenArray : TrainingsSet[] = [];
+  placeholder : AkutellsteLeistung | null = null;
   trainingsEinheit : TrainingsEinheit | null = null;
   public uebungenOptionen: Uebung[] = [];
   userId : number | null = null;
@@ -98,6 +99,7 @@ export class NewTrainingComponent implements OnInit {
       this.uebungenArray[elementIndex].wiederholungen = wiederholungen;
       this.uebungenArray[elementIndex].comment = comment;
 
+
       if(this.checkIfFieldsAreFilled(elementIndex) && this.trainingsEinheit != null){
         this.trainingsEinheit.trainingsSets = this.uebungenArray;
         if(!this.checkIfUebungenAreComplete(this.trainingsEinheit.trainingsSets)){ return; }
@@ -105,10 +107,8 @@ export class NewTrainingComponent implements OnInit {
       });
     
       }
-
       return;
     } 
-
 
     let currentLastPosition = this.uebungenArray.length-1
    
@@ -134,14 +134,10 @@ export class NewTrainingComponent implements OnInit {
     this.uebungenArray[currentLastPosition].wiederholungen = wiederholungen;
     this.uebungenArray[currentLastPosition].comment = comment;
     
-    if(this.checkIfFieldsAreFilled(currentLastPosition)){
-    
+    if(this.checkIfFieldsAreFilled(currentLastPosition)){ 
         this.addFControl();      
         this.saveBisherigeUebungenAndAddNewTrainingsSet()
       }
-      //this.addFControl();
-     
-
   }
 
   checkIfFieldsAreFilled(position: number): boolean{
@@ -175,7 +171,6 @@ export class NewTrainingComponent implements OnInit {
     this.trainingRestService.saveTrainingsEinheit(this.trainingsEinheit).subscribe(data => {
       this.trainingsEinheit = data;
       window.location.reload();
-//      this.router.navigate(['newTraining/'+this.userId]);
     });
   }
 
@@ -190,13 +185,30 @@ export class NewTrainingComponent implements OnInit {
   }
 
   deleteZutat(index : number){
-    //let trainingsSets : TrainingsSet[] = this.trainingsEinheit?.trainingsSets!;
     let uebung : TrainingsSet = this.uebungenArray[index];
-
     this.trainingRestService.deleteTrainingSet(this.trainingsEinheit!.idTrainingeinheit!, uebung.uebung?.idUebung!).subscribe(data => {
       this.uebungenArray.splice(index, 1);
       this.trainingsEinheit!.trainingsSets = this.uebungenArray;
     });
-    
   }
+
+  getLatestGewichtForUebung(userId: number, uebungId: number){
+    this.trainingRestService.getLatestGewichtForUebung(userId, uebungId).subscribe(x => {
+
+    });
+  }
+
+  changeUebung(index: number){
+    // hole placeholder
+    let uebungId : number = this.formUebung.get('uebungName' + index)?.value;  
+    
+    if(this.userId != null && uebungId != null){
+      //let uebungId : number = this.uebungenArray[index].uebung?.idUebung!
+      this.trainingRestService.getLatestGewichtForUebung(this.userId, uebungId).subscribe(data => {
+        this.placeholder = data;
+        console.log('this.placeholder: ', this.placeholder);
+      })
+    }
+  }
+
 }
