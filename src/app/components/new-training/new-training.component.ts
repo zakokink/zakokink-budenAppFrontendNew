@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AkutellsteLeistung, TrainingsEinheit, TrainingsSet, Uebung, User } from 'src/app/classes/trainingClasses';
+import { AkutellsteLeistung, Placeholder, TrainingsEinheit, TrainingsSet, Uebung, User } from 'src/app/classes/trainingClasses';
 import { TrainingRestService } from 'src/app/services/training-rest.service';
 
 @Component({
@@ -12,10 +12,15 @@ import { TrainingRestService } from 'src/app/services/training-rest.service';
 export class NewTrainingComponent implements OnInit {
   formUebung: FormGroup;
   uebungenArray : TrainingsSet[] = [];
-  placeholder : AkutellsteLeistung | null = null;
+  public placeholder : Placeholder | null = null;
+  
   trainingsEinheit : TrainingsEinheit | null = null;
   public uebungenOptionen: Uebung[] = [];
+  public tempUebungenOptionen: Uebung[] = [];
+  
   userId : number | null = null;
+
+
 
   constructor(private trainingRestService: TrainingRestService,private route: ActivatedRoute, private router: Router ) { 
     this.formUebung = new FormGroup({
@@ -104,8 +109,7 @@ export class NewTrainingComponent implements OnInit {
         this.trainingsEinheit.trainingsSets = this.uebungenArray;
         if(!this.checkIfUebungenAreComplete(this.trainingsEinheit.trainingsSets)){ return; }
         this.trainingRestService.saveTrainingsEinheit(this.trainingsEinheit).subscribe(data => {this.trainingsEinheit = data;      
-      });
-    
+        });
       }
       return;
     } 
@@ -201,14 +205,61 @@ export class NewTrainingComponent implements OnInit {
   changeUebung(index: number){
     // hole placeholder
     let uebungId : number = this.formUebung.get('uebungName' + index)?.value;  
-    
-    if(this.userId != null && uebungId != null){
+    /*
+    if(this.uebungenArray.length-1 === index){
+      return;
+    }
+    */
+    if(this.userId != null && uebungId != null && this.uebungenArray.length-1 === index){
       //let uebungId : number = this.uebungenArray[index].uebung?.idUebung!
       this.trainingRestService.getLatestGewichtForUebung(this.userId, uebungId).subscribe(data => {
-        this.placeholder = data;
-        console.log('this.placeholder: ', this.placeholder);
+        let tempPlaceholder : Placeholder = new Placeholder();
+        tempPlaceholder.uebungId = uebungId;
+        tempPlaceholder.akutellsteLeistung = data;
+        
+        this.placeholder = tempPlaceholder;
       })
+    }    
+
+    if(this.checkIfFieldsAreFilled(index) && this.trainingsEinheit != null){
+      this.trainingsEinheit.trainingsSets = this.uebungenArray;
+      if(!this.checkIfUebungenAreComplete(this.trainingsEinheit.trainingsSets)){ return; }
+      
+      let uebung : Uebung | null = this.getUebungById(uebungId);
+      this.trainingsEinheit.trainingsSets[index].uebung = uebung;
+      this.trainingRestService.saveTrainingsEinheit(this.trainingsEinheit).subscribe(data => {this.trainingsEinheit = data;      
+      });
     }
   }
 
+  private getUebungById(id: number) : Uebung | null{
+    let uebung : Uebung = new Uebung();
+    let result: Uebung[] = this.uebungenOptionen.filter(x => x.idUebung == id);
+    if(result.length == 1){
+      uebung.idUebung = id;
+      uebung.name = result[0].name;
+      uebung.maxWiederholungen = result[0].maxWiederholungen;
+      uebung.minWiederholungen = result[0].minWiederholungen;
+      uebung.comment = result[0].comment; 
+      return uebung;       
+    }
+    return null;
+  }
+  /*
+  private updateUebungsOptions(){
+    for(let option of this.uebungenOptionen){      
+      let result = this.uebungenArray.filter(x => x.uebung?.idUebung == option.idUebung)
+      if(result == null || result.length < 1){
+        this.tempUebungenOptionen.push(option);
+      }
+    }
+  }
+  */
+ public checkOptionDisabled(uebung : Uebung): boolean {
+  let result : TrainingsSet[] = this.uebungenArray.filter(x => x.uebung?.idUebung == uebung.idUebung);
+  if(result != null && result.length > 0){
+    return true;
+  }
+  return false;
+ }
 }

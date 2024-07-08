@@ -9,10 +9,10 @@
         <div *ngFor="let uebung of uebungenArray; let elementIndex = index;" class="new-recept-zutaten" >
           <div><select class="select-box" name="uebungenMenu" (change)="changeUebung(elementIndex)" formControlName="uebungName{{elementIndex}}">
             <option value="" disabled selected>Bitte auswählen...</option>
-            <option *ngFor="let item of uebungenOptionen" value={{item.idUebung}}>{{item.name}}</option>
+            <option *ngFor="let item of uebungenOptionen" [disabled]="checkOptionDisabled(item)" value={{item.idUebung}}>{{item.name}}</option>
           </select></div>          
-          <div><input class="form-control" type="text" (change)="addNewUebung(elementIndex)" id='{{elementIndex}}' placeholder={{placeholder?.gewicht}} formControlName='gewicht{{elementIndex}}'></div>
-          <div><input class="form-control" type="text" (change)="addNewUebung(elementIndex)" placeholder={{placeholder?.wiederholungen}} formControlName='wiederholungen{{elementIndex}}'></div>
+          <div><input class="form-control" type="text" (change)="addNewUebung(elementIndex)" id='{{elementIndex}}' placeholder={{placeholder?.akutellsteLeistung?.gewicht}} formControlName='gewicht{{elementIndex}}'></div>
+          <div><input class="form-control" type="text" (change)="addNewUebung(elementIndex)" placeholder={{placeholder?.akutellsteLeistung?.wiederholungen}} formControlName='wiederholungen{{elementIndex}}'></div>
           <div><input class="form-control" type="text" (change)="addNewUebung(elementIndex)" formControlName='comment{{elementIndex}}'></div>
           <div><button class="btn btn-danger" id='removeFCButton{{elementIndex}}' (click)="deleteZutat(elementIndex)">-</button></div>
 

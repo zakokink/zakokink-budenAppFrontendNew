@@ -33,5 +33,10 @@ export class AkutellsteLeistung {
   wiederholungen: string | null = null;
 }
 
+export class Placeholder {
+  uebungId: number | null = null;
+  akutellsteLeistung : AkutellsteLeistung | null = null;
+}
+
 
 
