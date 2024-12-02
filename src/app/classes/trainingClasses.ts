@@ -1,14 +1,14 @@
 export class Uebung {
-  idUebung : number | null = null;
-  name : string | null = null;
+  id : number | null = null;
+  uebung : string | null = null;
   comment : string  | null = null;
   minWiederholungen : number | null = null;
   maxWiederholungen : number | null = null;
 }
 
 export class User {
-  userId : number | null = null;
-  username : string | null = null;
+  id : number | null = null;
+  name : string | null = null;
 }
 
 export class TrainingsSet {
@@ -37,6 +37,24 @@ export class Placeholder {
   uebungId: number | null = null;
   akutellsteLeistung : AkutellsteLeistung | null = null;
 }
+export class TrainingResponse {
+  status : string | null = null;
+  data : Training[] = [];
+}
 
+export class Training {
+  id : number | null = null;
+  user : User | null = null;
+  uebung : Uebung | null = null;
+  idTrainingeinheit : number | null = null;
+  date : Date | null = null;
+  gewicht : string | null = null;
+  wiederholungen : string | null = null;
+  comment : string | null = null;
+}
 
-
+export class TrainingEinheit {
+  id : number | null = null;
+  date : Date | null = null;
+  trainings : Training[] = [];
+}

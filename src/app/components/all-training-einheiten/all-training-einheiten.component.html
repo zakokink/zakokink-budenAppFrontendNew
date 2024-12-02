@@ -1,19 +1,22 @@
-<p>all-training-einheiten works!</p>
-<p>Alle Trainingseinheiten fuer: {{trainingsEinheiten[0]?.user?.username}}</p>
+
+<p>Alle Trainingseinheiten fuer: {{trainings[0]?.user?.name}}</p>
 
 <div>
-  <div class="trainings-einheit" *ngFor="let element of trainingsEinheiten">
-    <div>Datum: {{element.datum}}</div>
-    <div class="einzelnes-set"><div class="einzelnes-set-element">Nr.</div><div class="einzelnes-set-element">Übung</div><div class="einzelnes-set-element">Gewicht</div><div class="einzelnes-set-element">Wiederholungen</div> <div class="einzelnes-set-element">Kommentar</div>  </div>
-    <div  *ngFor="let innerElement of element.trainingsSets; let elementIndex = index;" >
+  
+  <div class="trainings-einheit" *ngFor="let trainingEinheit of trainingEinheitArray">
+  
+    <div>Datum: {{trainingEinheit.date}}</div>
+    <div class="einzelnes-set-neu"><div class="einzelnes-set-element">Übung</div><div class="einzelnes-set-element">Gewicht</div><div class="einzelnes-set-element">Wiederholungen</div> <div class="einzelnes-set-element">Kommentar</div>  </div>
+    <div class="trainings-einheit" *ngFor="let training of trainingEinheit.trainings">
       
-      <div class="einzelnes-set">
-        <div class="einzelnes-set-element">{{elementIndex+1}}</div>
-        <div class="einzelnes-set-element">{{innerElement.uebung?.name}}</div>
-        <div class="einzelnes-set-element">{{innerElement.gewicht}}</div>
-        <div class="einzelnes-set-element">{{innerElement.wiederholungen}}</div>
-        <div class="einzelnes-set-element">{{innerElement.comment}}</div>
+      <div class="einzelnes-set-neu">
+        <div class="einzelnes-set-element">{{training.uebung?.uebung}}</div>
+        <div class="einzelnes-set-element">{{training.gewicht}}</div>
+        <div class="einzelnes-set-element">{{training.wiederholungen}}</div>
+        <div class="einzelnes-set-element">{{training.comment}}</div>
       </div>
+
     </div>
-   </div>
+    <hr>
+  </div>
 </div>

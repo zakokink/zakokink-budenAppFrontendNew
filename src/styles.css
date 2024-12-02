@@ -21,3 +21,12 @@
   column-gap: 0.3rem;
   padding-bottom: 0.5rem;
 }
+
+.einzelnes-set-neu {
+  display: grid;  
+  /* grid-template-columns: 1fr 6fr 2fr 2fr 5fr;   */
+  grid-template-columns: 16rem 6rem 12rem 10rem;
+  column-gap: 0.3rem;
+  padding-bottom: 0.5rem;
+}
+

@@ -33,7 +33,7 @@ export class NewUebungComponent implements OnInit {
 
     if(uebungName.trim().length > 0){
       let uebung : Uebung = new Uebung();
-      uebung.name = uebungName;
+      uebung.uebung = uebungName;
       uebung.comment = uebungComment;
       uebung.minWiederholungen = uebungMinWiederholungen;
       uebung.maxWiederholungen = uebungMaxWiederholungen;
@@ -43,7 +43,7 @@ export class NewUebungComponent implements OnInit {
       console.log('uebung.comment ', uebung.comment );
      
       this.trainingService.saveUebung(uebung).subscribe(data => 
-        { console.log('Uebung : ' + data.name + 'gespeichert' )
+        { console.log('Uebung : ' + data.uebung + 'gespeichert' )
           this.router.navigate(['']); });
       
 
