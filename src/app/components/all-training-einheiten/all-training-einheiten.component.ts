@@ -17,7 +17,7 @@ export class AllTrainingEinheitenComponent implements OnInit {
   public trainingsArray : Training[] = [];
   public trainingEinheit : TrainingEinheit = new TrainingEinheit();
   public trainingEinheitArray : TrainingEinheit[] = [];
-  
+
   private userId :  number = 0;
 
   ngOnInit(): void {
@@ -25,41 +25,23 @@ export class AllTrainingEinheitenComponent implements OnInit {
     this.restService.getTrainingsByUserId(this.userId).subscribe((data : TrainingResponse) => {
       this.trainings = data.data;
 
-
       // Befuelle das trainingEinheitArray
       if(this.trainings != null && this.trainings.length > 0){
         this.befuelleTrainingEinheitArray();
-      }
-      /*
-      for(let training of this.trainings){
-        // Array ist noch leer oder Gleiches Datum 
-        if(this.trainingEinheitArray.length < 1 || (this.trainingEinheitArray.length > 0 && this.trainingEinheitArray[this.trainingEinheitArray.length-1].date != training.date)) {
-          let neueTrainingEinheit : TrainingEinheit = new TrainingEinheit();
-          neueTrainingEinheit.date = training.date;
-          neueTrainingEinheit.trainings.push(training)
-          this.trainingEinheitArray.push(neueTrainingEinheit); 
-        } 
-        else if(this.trainingEinheitArray.length > 0 && this.trainingEinheitArray[this.trainingEinheitArray.length-1].date == training.date){
-          // fuege das training an die TrainingsEinheit an der Position an 
-          this.trainingEinheitArray[this.trainingEinheitArray.length-1].trainings.push(training);
-        }
-      }
-      */
-      console.log(this.trainingEinheitArray)  
     });
   }
 
   private befuelleTrainingEinheitArray(){
     for(let training of this.trainings){
-      // Array ist noch leer oder Gleiches Datum 
+      // Array ist noch leer oder Gleiches Datum
       if(this.trainingEinheitArray.length < 1 || (this.trainingEinheitArray.length > 0 && this.trainingEinheitArray[this.trainingEinheitArray.length-1].date != training.date)) {
         let neueTrainingEinheit : TrainingEinheit = new TrainingEinheit();
         neueTrainingEinheit.date = training.date;
         neueTrainingEinheit.trainings.push(training)
-        this.trainingEinheitArray.push(neueTrainingEinheit); 
-      } 
+        this.trainingEinheitArray.push(neueTrainingEinheit);
+      }
       else if(this.trainingEinheitArray.length > 0 && this.trainingEinheitArray[this.trainingEinheitArray.length-1].date == training.date){
-        // fuege das training an die TrainingsEinheit an der Position an 
+        // fuege das training an die TrainingsEinheit an der Position an
         this.trainingEinheitArray[this.trainingEinheitArray.length-1].trainings.push(training);
       }
     }
