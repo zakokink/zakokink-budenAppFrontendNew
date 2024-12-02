@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AkutellsteLeistung, Placeholder, Training, TrainingResponse, TrainingsEinheit, TrainingsSet, Uebung, User } from 'src/app/classes/trainingClasses';
+import { AkutellsteLeistung, Placeholder, TrainingsEinheit, TrainingsSet, Uebung, User } from 'src/app/classes/trainingClasses';
 import { TrainingRestService } from 'src/app/services/training-rest.service';
 
 @Component({
@@ -14,10 +14,9 @@ export class NewTrainingComponent implements OnInit {
   uebungenArray : TrainingsSet[] = [];
   public placeholder : Placeholder | null = null;
 
-  //trainingsEinheit : TrainingsEinheit | null = null;
+  trainingsEinheit : TrainingsEinheit | null = null;
   public uebungenOptionen: Uebung[] = [];
   public tempUebungenOptionen: Uebung[] = [];
-  public trainingArray : Training[] = [];
 
   userId : number | null = null;
 
@@ -39,30 +38,29 @@ export class NewTrainingComponent implements OnInit {
     })
    
     this.trainingRestService.getTrainingsEinheitDesHeutigenDatumsFuerUser(this.userId).subscribe(
-       (data : TrainingResponse) => {
-        if(data != null && data.data != null)
-        if(data != null && data.data != null && data.data.length > 0){
-          this.trainingArray = data.data;
-          if(this.trainingArray  != null && this.trainingArray.length > 0){
-            //this.uebungenArray = this.trainingsEinheit.trainingsSets;
+       data => {
+        if(data.length > 0){
+          this.trainingsEinheit = data[0];
+          if(this.trainingsEinheit.trainingsSets != null && this.trainingsEinheit.trainingsSets.length > 0){
+            this.uebungenArray = this.trainingsEinheit.trainingsSets;
             console.log('uebungenArray: ' , this.uebungenArray)
 
-            for(let i = 0; i<this.trainingArray.length; i++){
+            for(let i = 0; i<this.uebungenArray.length; i++ ){
 
-              console.log('this.uebungenArray[i]: ', this.trainingArray[i])
-              console.log('this.uebungenArray[i].uebung: ',this.trainingArray[i].uebung )
-              console.log('this.uebungenArray[i].uebung?.name!: ', this.trainingArray[i].uebung?.uebung)
+              console.log('this.uebungenArray[i]: ', this.uebungenArray[i])
+              console.log('this.uebungenArray[i].uebung: ',this.uebungenArray[i].uebung )
+              console.log('this.uebungenArray[i].uebung?.name!: ', this.uebungenArray[i].uebung?.uebung)
               let uebName : string = this.uebungenArray[i].uebung?.uebung!;
 
               this.formUebung.addControl('uebungName'+i, new FormControl(uebName),{});
-              this.formUebung.addControl('gewicht'+i, new FormControl(this.trainingArray[i].gewicht),{});
-              this.formUebung.addControl('wiederholungen'+i, new FormControl(this.trainingArray[i].wiederholungen),{});
-              this.formUebung.addControl('comment'+i, new FormControl(this.trainingArray[i].comment),{});
+              this.formUebung.addControl('gewicht'+i, new FormControl(this.uebungenArray[i].gewicht),{});
+              this.formUebung.addControl('wiederholungen'+i, new FormControl(this.uebungenArray[i].wiederholungen),{});
+              this.formUebung.addControl('comment'+i, new FormControl(this.uebungenArray[i].comment),{});
 
-              this.formUebung.get('uebungName'+i)?.setValue(this.trainingArray[i].uebung?.id);
-              this.formUebung.get('gewicht'+i)?.setValue(this.trainingArray[i].gewicht);
-              this.formUebung.get('wiederholungen'+i)?.setValue(this.trainingArray[i].wiederholungen);
-              this.formUebung.get('comment'+i)?.setValue(this.trainingArray[i].comment);
+              this.formUebung.get('uebungName'+i)?.setValue(this.uebungenArray[i].uebung?.id);
+              this.formUebung.get('gewicht'+i)?.setValue(this.uebungenArray[i].gewicht);
+              this.formUebung.get('wiederholungen'+i)?.setValue(this.uebungenArray[i].wiederholungen);
+              this.formUebung.get('comment'+i)?.setValue(this.uebungenArray[i].comment);
             }
             this.addNewUebung(null);
           } else {
@@ -79,10 +77,10 @@ export class NewTrainingComponent implements OnInit {
   }
 
   addFControl(){
-    this.formUebung.addControl('uebungName'+this.trainingArray.length, new FormControl(''),{});
-    this.formUebung.addControl('gewicht'+this.trainingArray.length, new FormControl(''),{});
-    this.formUebung.addControl('wiederholungen'+this.trainingArray.length, new FormControl(''),{});
-    this.formUebung.addControl('comment'+this.trainingArray.length, new FormControl(''),{});
+    this.formUebung.addControl('uebungName'+this.uebungenArray.length, new FormControl(''),{});
+    this.formUebung.addControl('gewicht'+this.uebungenArray.length, new FormControl(''),{});
+    this.formUebung.addControl('wiederholungen'+this.uebungenArray.length, new FormControl(''),{});
+    this.formUebung.addControl('comment'+this.uebungenArray.length, new FormControl(''),{});
   }
 
   addNewUebung(elementIndex : number | null){
@@ -92,6 +90,8 @@ export class NewTrainingComponent implements OnInit {
       let gewicht : string = this.formUebung.get('gewicht'+elementIndex)?.value;
       let wiederholungen : string = this.formUebung.get('wiederholungen'+elementIndex)?.value;
       let comment : string = this.formUebung.get('comment'+elementIndex)?.value;
+
+      this.uebungenArray[elementIndex].idTrainingeinheit = this.trainingsEinheit?.idTrainingeinheit!;
 
       let result : Uebung[] = this.uebungenOptionen.filter(x => x.id == uebungId);
       if(result.length != 1){
@@ -104,11 +104,9 @@ export class NewTrainingComponent implements OnInit {
       this.uebungenArray[elementIndex].comment = comment;
 
 
-      if(this.checkIfFieldsAreFilled(elementIndex) && this.trainingArray != null){
+      if(this.checkIfFieldsAreFilled(elementIndex) && this.trainingsEinheit != null){
         this.trainingsEinheit.trainingsSets = this.uebungenArray;
-        if(!this.checkIfUebungenAreComplete(this.trainingsEinheit.trainingsSets)){ 
-          return; 
-        }
+        if(!this.checkIfUebungenAreComplete(this.trainingsEinheit.trainingsSets)){ return; }
         this.trainingRestService.saveTrainingsEinheit(this.trainingsEinheit).subscribe(data => {this.trainingsEinheit = data;
         });
       }
@@ -179,9 +177,9 @@ export class NewTrainingComponent implements OnInit {
     });
   }
 
-  checkIfUebungenAreComplete(trainingArray :Training[] | null) : boolean {
-    if(trainingArray != null && trainingArray.length!>0){
-      let result  = trainingArray.filter(x => {x.uebung?.uebung == null || x.uebung?.uebung?.trim().length < 1})
+  checkIfUebungenAreComplete(trainingssetArray :TrainingsSet[] | null) : boolean {
+    if(trainingssetArray != null && trainingssetArray.length!>0){
+      let result  = trainingssetArray.filter(x => {x.uebung?.uebung == null || x.uebung?.uebung?.trim().length < 1})
       if(result != null && result.length > 0){
         return false;
       }
@@ -222,12 +220,12 @@ export class NewTrainingComponent implements OnInit {
       })
     }
 
-    if(this.checkIfFieldsAreFilled(index) && this.trainingArray != null){
-      //this.trainingsEinheit.trainingsSets = this.uebungenArray;
-      if(!this.checkIfUebungenAreComplete(this.trainingArray)){ return; }
+    if(this.checkIfFieldsAreFilled(index) && this.trainingsEinheit != null){
+      this.trainingsEinheit.trainingsSets = this.uebungenArray;
+      if(!this.checkIfUebungenAreComplete(this.trainingsEinheit.trainingsSets)){ return; }
 
       let uebung : Uebung | null = this.getUebungById(uebungId);
-      this.trainingArray[index].uebung = uebung;
+      this.trainingsEinheit.trainingsSets[index].uebung = uebung;
       this.trainingRestService.saveTrainingsEinheit(this.trainingsEinheit).subscribe(data => {this.trainingsEinheit = data;
       });
     }

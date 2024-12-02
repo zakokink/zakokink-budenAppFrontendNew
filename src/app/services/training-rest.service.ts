@@ -19,8 +19,16 @@ export class TrainingRestService {
     return this.http.get<TrainingResponse>(this.API_URL + '/trainingsFuerUser/' + id);
   }
 
+  public getTrainingsEinheitDesHeutigenDatumsFuerUser(userId : number): Observable<TrainingResponse>{
+    return this.http.get<TrainingResponse>(this.API_URL + '/getTrainingsEinheitDesHeutigenDatumsFuerUser/' + userId);
+  }
+
+  public saveTraining(training: TrainingsEinheit): Observable<Training>{
+    return this.http.post<Training>(this.API_URL + '/trainingViewset', training);
+  }
 
 
+  // **** Alte Methoden ****
   public getTrainingsEinheitenByUserId(id : number): Observable<TrainingsEinheit[]>{
     return this.http.get<TrainingsEinheit[]>(this.API_URL + '/getTrainingsEinheitenByUserId/' + id);
   }
@@ -37,7 +45,7 @@ export class TrainingRestService {
     return this.http.get<TrainingsEinheit>(this.API_URL + '/getTrainingsEinheitDesHeutigenDatums');
   }
 
-  public getTrainingsEinheitDesHeutigenDatumsFuerUser(userId : number): Observable<TrainingsEinheit[]>{
+  public getTrainingsEinheitDesHeutigenDatumsFuerUserAlt(userId : number): Observable<TrainingsEinheit[]>{
     return this.http.get<TrainingsEinheit[]>(this.API_URL + '/getTrainingsEinheitDesHeutigenDatumsFuerUser/' + userId);
   }
 
@@ -45,6 +53,8 @@ export class TrainingRestService {
     return this.http.post<TrainingsEinheit>(this.API_URL + '/saveTrainingsEinheit', trainingsEinheit);
   }
 
+
+  
   public deleteTrainingSet(trainingsEinheit: number, uebungsNumber: number){
     return this.http.delete<TrainingsSet>(this.API_URL + '/deleteTrainingSetByTrainingsEinheitUndUebung/'+trainingsEinheit+'/'+uebungsNumber);
   }
