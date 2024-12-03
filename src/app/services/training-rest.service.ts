@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AkutellsteLeistung, Training, TrainingResponse, TrainingsEinheit, TrainingsSet, Uebung, User } from '../classes/trainingClasses';
+import { AkutellsteLeistung, Training, TrainingResponse, TrainingSaveObject, TrainingsEinheit, TrainingsSet, Uebung, User } from '../classes/trainingClasses';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ export class TrainingRestService {
   constructor(private http : HttpClient) { }
 
   //private API_URL = 'http://localhost:4230/api/1.0/restapi'
-  private API_URL = 'http://127.0.0.1:8000/'
+  private API_URL = 'http://127.0.0.1:8000'
   public getAllUsers(): Observable<User[]>{
     return this.http.get<User[]>(this.API_URL + '/user');
   }
@@ -20,11 +20,11 @@ export class TrainingRestService {
   }
 
   public getTrainingsEinheitDesHeutigenDatumsFuerUser(userId : number): Observable<TrainingResponse>{
-    return this.http.get<TrainingResponse>(this.API_URL + '/getTrainingsEinheitDesHeutigenDatumsFuerUser/' + userId);
+    return this.http.get<TrainingResponse>(this.API_URL + '/trainingsEinheitDesHeutigenDatumsFuerUser/' + userId);
   }
 
-  public saveTraining(training: TrainingsEinheit): Observable<Training>{
-    return this.http.post<Training>(this.API_URL + '/trainingViewset', training);
+  public saveTraining(training: TrainingSaveObject): Observable<TrainingSaveObject>{
+    return this.http.post<TrainingSaveObject>(this.API_URL + '/trainingViewset', training);
   }
 
 

@@ -47,6 +47,32 @@ export class Training {
   user : User | null = null;
   uebung : Uebung | null = null;
   idTrainingeinheit : number | null = null;
+  date : String | null = null;
+  gewicht : string | null = null;
+  wiederholungen : string | null = null;
+  comment : string | null = null;
+}
+
+
+export class TrainingSaveObject {
+  id : number | null = null;
+  user : number | null = null;
+  uebung : number | null = null;
+  date : String | null = null;
+  gewicht : string | null = null;
+  wiederholungen : string | null = null;
+  comment : string | null = null;
+}
+
+
+
+
+
+export class TrainingAlt {
+  id : number | null = null;
+  user : User | null = null;
+  uebung : Uebung | null = null;
+  idTrainingeinheit : number | null = null;
   date : Date | null = null;
   gewicht : string | null = null;
   wiederholungen : string | null = null;
@@ -55,6 +81,6 @@ export class Training {
 
 export class TrainingEinheit {
   id : number | null = null;
-  date : Date | null = null;
+  date : String | null = null;
   trainings : Training[] = [];
 }

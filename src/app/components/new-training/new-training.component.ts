@@ -1,7 +1,8 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AkutellsteLeistung, Placeholder, Training, TrainingResponse, TrainingsEinheit, TrainingsSet, Uebung, User } from 'src/app/classes/trainingClasses';
+import { AkutellsteLeistung, Placeholder, Training, TrainingResponse, TrainingSaveObject, TrainingsEinheit, TrainingsSet, Uebung, User } from 'src/app/classes/trainingClasses';
 import { TrainingRestService } from 'src/app/services/training-rest.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { TrainingRestService } from 'src/app/services/training-rest.service';
 })
 export class NewTrainingComponent implements OnInit {
   formUebung: FormGroup;
-  uebungenArray : TrainingsSet[] = [];
+  uebungenArray : Training[] = [];
   public placeholder : Placeholder | null = null;
 
   //trainingsEinheit : TrainingsEinheit | null = null;
@@ -20,8 +21,6 @@ export class NewTrainingComponent implements OnInit {
   public trainingArray : Training[] = [];
 
   userId : number | null = null;
-
-
 
   constructor(private trainingRestService: TrainingRestService,private route: ActivatedRoute, private router: Router ) {
     this.formUebung = new FormGroup({
@@ -36,17 +35,19 @@ export class NewTrainingComponent implements OnInit {
     this.userId = +this.route.snapshot.paramMap.get('id')!
     this.trainingRestService.getAlleUebungen().subscribe(data => {
       this.uebungenOptionen = data;
+      console.log('uebungenOptionen: ' , this.uebungenOptionen)
     })
    
     this.trainingRestService.getTrainingsEinheitDesHeutigenDatumsFuerUser(this.userId).subscribe(
        (data : TrainingResponse) => {
-        if(data != null && data.data != null)
+        console.log('data: ', data)
         if(data != null && data.data != null && data.data.length > 0){
           this.trainingArray = data.data;
           if(this.trainingArray  != null && this.trainingArray.length > 0){
-            //this.uebungenArray = this.trainingsEinheit.trainingsSets;
-            console.log('uebungenArray: ' , this.uebungenArray)
 
+            this.uebungenArray = this.trainingArray;
+            console.log('uebungenArray: ' , this.uebungenArray)
+            console.log('this.trainingArray: ', this.trainingArray)
             for(let i = 0; i<this.trainingArray.length; i++){
 
               console.log('this.uebungenArray[i]: ', this.trainingArray[i])
@@ -66,13 +67,11 @@ export class NewTrainingComponent implements OnInit {
             }
             this.addNewUebung(null);
           } else {
-            this.uebungenArray.push(new TrainingsSet());
+            this.uebungenArray.push(new Training());
             this.addFControl();
           }
-
-
         } else {
-          this.createNewTrainingseinheit();
+          //this.createNewTrainingseinheit();
         }
       }
     );
@@ -87,7 +86,7 @@ export class NewTrainingComponent implements OnInit {
 
   addNewUebung(elementIndex : number | null){
 
-    if(elementIndex != null &&   elementIndex != this.uebungenArray.length-1){
+    if(elementIndex != null && elementIndex != this.uebungenArray.length-1){
       let uebungId : number = this.formUebung.get('uebungName'+elementIndex)?.value;
       let gewicht : string = this.formUebung.get('gewicht'+elementIndex)?.value;
       let wiederholungen : string = this.formUebung.get('wiederholungen'+elementIndex)?.value;
@@ -103,7 +102,7 @@ export class NewTrainingComponent implements OnInit {
       this.uebungenArray[elementIndex].wiederholungen = wiederholungen;
       this.uebungenArray[elementIndex].comment = comment;
 
-
+      /*
       if(this.checkIfFieldsAreFilled(elementIndex) && this.trainingArray != null){
         this.trainingsEinheit.trainingsSets = this.uebungenArray;
         if(!this.checkIfUebungenAreComplete(this.trainingsEinheit.trainingsSets)){ 
@@ -111,7 +110,8 @@ export class NewTrainingComponent implements OnInit {
         }
         this.trainingRestService.saveTrainingsEinheit(this.trainingsEinheit).subscribe(data => {this.trainingsEinheit = data;
         });
-      }
+      } 
+      */
       return;
     }
 
@@ -138,10 +138,12 @@ export class NewTrainingComponent implements OnInit {
     this.uebungenArray[currentLastPosition].gewicht = gewicht;
     this.uebungenArray[currentLastPosition].wiederholungen = wiederholungen;
     this.uebungenArray[currentLastPosition].comment = comment;
-
+    
+    this.addFControl();
+    
     if(this.checkIfFieldsAreFilled(currentLastPosition)){
         this.addFControl();
-        this.saveBisherigeUebungenAndAddNewTrainingsSet()
+        this.saveUebung(currentLastPosition);
       }
   }
 
@@ -155,7 +157,30 @@ export class NewTrainingComponent implements OnInit {
     wiederholungen.trim().length > 0
   }
 
+  saveUebung(currentLastPosition : number){
+    
+    let uebungToSave : Training = this.uebungenArray[currentLastPosition];
+    
+   
+    console.log(uebungToSave)
+    if(uebungToSave != null && uebungToSave != undefined && uebungToSave.id == undefined){
+      let user = new User();
+      user.id = this.userId;
+      var datePipe = new DatePipe("en-US");
+      let newDate = datePipe.transform(new Date(), 'yyyy-MM-dd');
+      uebungToSave.uebung?.id
+      uebungToSave.user = user;
+      uebungToSave.date = newDate;
+      let trainingSaveObject : TrainingSaveObject = this.createDto(uebungToSave);
 
+      this.trainingRestService.saveTraining(trainingSaveObject).subscribe(data => {
+        console.log(data);
+      });
+    }
+    this.uebungenArray.push(new Training);
+     }
+
+  /*
   saveBisherigeUebungenAndAddNewTrainingsSet(){
     if(this.trainingsEinheit != null && this.trainingsEinheit.idTrainingeinheit != null){
       this.uebungenArray.forEach(x => x.idTrainingeinheit = this.trainingsEinheit?.idTrainingeinheit!);
@@ -167,7 +192,9 @@ export class NewTrainingComponent implements OnInit {
       });
     }
   }
-
+  */
+ 
+  /*
   createNewTrainingseinheit(){
     let user = new User();
     user.id = this.userId;
@@ -178,7 +205,7 @@ export class NewTrainingComponent implements OnInit {
       window.location.reload();
     });
   }
-
+  */
   checkIfUebungenAreComplete(trainingArray :Training[] | null) : boolean {
     if(trainingArray != null && trainingArray.length!>0){
       let result  = trainingArray.filter(x => {x.uebung?.uebung == null || x.uebung?.uebung?.trim().length < 1})
@@ -189,13 +216,15 @@ export class NewTrainingComponent implements OnInit {
     return true;
   }
 
-  deleteZutat(index : number){
+  /*
+  deleteUebung(index : number){
     let uebung : TrainingsSet = this.uebungenArray[index];
     this.trainingRestService.deleteTrainingSet(this.trainingsEinheit!.idTrainingeinheit!, uebung.uebung?.id!).subscribe(data => {
       this.uebungenArray.splice(index, 1);
       this.trainingsEinheit!.trainingsSets = this.uebungenArray;
     });
   }
+  */
 
   getLatestGewichtForUebung(userId: number, uebungId: number){
     this.trainingRestService.getLatestGewichtForUebung(userId, uebungId).subscribe(x => {
@@ -203,14 +232,11 @@ export class NewTrainingComponent implements OnInit {
     });
   }
 
+  /*
   changeUebung(index: number){
     // hole placeholder
     let uebungId : number = this.formUebung.get('uebungName' + index)?.value;
-    /*
-    if(this.uebungenArray.length-1 === index){
-      return;
-    }
-    */
+
     if(this.userId != null && uebungId != null && this.uebungenArray.length-1 === index){
       //let uebungId : number = this.uebungenArray[index].uebung?.idUebung!
       this.trainingRestService.getLatestGewichtForUebung(this.userId, uebungId).subscribe(data => {
@@ -232,6 +258,7 @@ export class NewTrainingComponent implements OnInit {
       });
     }
   }
+  */
 
   private getUebungById(id: number) : Uebung | null{
     let uebung : Uebung = new Uebung();
@@ -253,4 +280,20 @@ export class NewTrainingComponent implements OnInit {
   }
   return false;
  }
+
+  private createDto(training: Training): TrainingSaveObject {
+    let trainingSaveObject: TrainingSaveObject = new TrainingSaveObject();
+    trainingSaveObject.comment = training.comment;
+    trainingSaveObject.date = training.date;
+    trainingSaveObject.gewicht = training.gewicht;
+    if(training.id != undefined || training.id != null){
+      trainingSaveObject.id = training.id;
+    }
+
+    trainingSaveObject.uebung = training.uebung!.id;
+    trainingSaveObject.user = training.user!.id;
+    trainingSaveObject.wiederholungen = training.wiederholungen;
+
+    return trainingSaveObject;
+  } 
 }

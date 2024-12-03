@@ -28,9 +28,10 @@ export class AllTrainingEinheitenComponent implements OnInit {
       // Befuelle das trainingEinheitArray
       if(this.trainings != null && this.trainings.length > 0){
         this.befuelleTrainingEinheitArray();
+      }
     });
   }
-
+  
   private befuelleTrainingEinheitArray(){
     for(let training of this.trainings){
       // Array ist noch leer oder Gleiches Datum
@@ -46,4 +47,5 @@ export class AllTrainingEinheitenComponent implements OnInit {
       }
     }
   }
+  
 }

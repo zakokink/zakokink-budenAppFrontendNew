@@ -9,7 +9,7 @@ import { TrainingRestService } from 'src/app/services/training-rest.service';
   templateUrl: './new-training.component.html',
   styleUrls: ['./new-training.component.css']
 })
-export class NewTrainingComponent implements OnInit {
+export class NewTrainingComponentOriginal implements OnInit {
   formUebung: FormGroup;
   uebungenArray : TrainingsSet[] = [];
   public placeholder : Placeholder | null = null;
