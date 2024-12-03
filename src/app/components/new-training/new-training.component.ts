@@ -14,8 +14,8 @@ export class NewTrainingComponent implements OnInit {
   formUebung: FormGroup;
   uebungenArray : Training[] = [];
   public placeholder : Placeholder | null = null;
+  math = Math;
 
-  //trainingsEinheit : TrainingsEinheit | null = null;
   public uebungenOptionen: Uebung[] = [];
   public tempUebungenOptionen: Uebung[] = [];
   public trainingArray : Training[] = [];
@@ -56,6 +56,12 @@ export class NewTrainingComponent implements OnInit {
               let uebName : string = this.uebungenArray[i].uebung?.uebung!;
 
               this.formUebung.addControl('uebungName'+i, new FormControl(uebName),{});
+
+              // Entferne unnoetige Kommastellen
+              if(!isNaN(Number(this.trainingArray[i].gewicht)) && (Number(this.trainingArray[i].gewicht) %1 == 0)){
+                this.trainingArray[i].gewicht = String(this.math.trunc(Number(this.trainingArray[i].gewicht)));
+              }
+
               this.formUebung.addControl('gewicht'+i, new FormControl(this.trainingArray[i].gewicht),{});
               this.formUebung.addControl('wiederholungen'+i, new FormControl(this.trainingArray[i].wiederholungen),{});
               this.formUebung.addControl('comment'+i, new FormControl(this.trainingArray[i].comment),{});
@@ -71,7 +77,8 @@ export class NewTrainingComponent implements OnInit {
             this.addFControl();
           }
         } else {
-          //this.createNewTrainingseinheit();
+          this.uebungenArray.push(new Training());
+          this.addFControl();
         }
       }
     );
@@ -85,7 +92,6 @@ export class NewTrainingComponent implements OnInit {
   }
 
   addNewUebung(elementIndex : number | null){
-
     if(elementIndex != null && elementIndex != this.uebungenArray.length-1){
       let uebungId : number = this.formUebung.get('uebungName'+elementIndex)?.value;
       let gewicht : string = this.formUebung.get('gewicht'+elementIndex)?.value;
@@ -180,32 +186,6 @@ export class NewTrainingComponent implements OnInit {
     this.uebungenArray.push(new Training);
      }
 
-  /*
-  saveBisherigeUebungenAndAddNewTrainingsSet(){
-    if(this.trainingsEinheit != null && this.trainingsEinheit.idTrainingeinheit != null){
-      this.uebungenArray.forEach(x => x.idTrainingeinheit = this.trainingsEinheit?.idTrainingeinheit!);
-      this.trainingsEinheit.trainingsSets = this.uebungenArray;
-      if(!this.checkIfUebungenAreComplete(this.trainingsEinheit.trainingsSets)){ return; }
-      this.trainingRestService.saveTrainingsEinheit(this.trainingsEinheit).subscribe(data => {
-        this.trainingsEinheit = data;
-        this.uebungenArray.push(new TrainingsSet);
-      });
-    }
-  }
-  */
- 
-  /*
-  createNewTrainingseinheit(){
-    let user = new User();
-    user.id = this.userId;
-    this.trainingsEinheit = new TrainingsEinheit();
-    this.trainingsEinheit.user = user;
-    this.trainingRestService.saveTrainingsEinheit(this.trainingsEinheit).subscribe(data => {
-      this.trainingsEinheit = data;
-      window.location.reload();
-    });
-  }
-  */
   checkIfUebungenAreComplete(trainingArray :Training[] | null) : boolean {
     if(trainingArray != null && trainingArray.length!>0){
       let result  = trainingArray.filter(x => {x.uebung?.uebung == null || x.uebung?.uebung?.trim().length < 1})
@@ -245,7 +225,21 @@ export class NewTrainingComponent implements OnInit {
         // Wenn historische Daten vorhanden sind, wird placeholder gesetzt
         if(data.data != null && data.data.gewicht != null && data.data.wiederholungen != null){
           aktuelleLeistung.gewicht = data.data.gewicht;
+          
+          // Entferne unnoetige Kommastellen
+          if(!isNaN(Number(data.data.gewicht)) && (Number(data.data.gewicht) %1 == 0)){
+            aktuelleLeistung.gewicht = String(this.math.trunc(Number(data.data.gewicht)));
+          }
+          
           aktuelleLeistung.wiederholungen = data.data.wiederholungen;
+          // Check ob das Gewicht zu erhoehen ist
+          let uebung = this.getUebungById(uebungId);
+          if(uebung && uebung.maxWiederholungen && !isNaN(Number(aktuelleLeistung.wiederholungen))){
+            if(Number(aktuelleLeistung.wiederholungen) >= uebung.maxWiederholungen){
+              aktuelleLeistung.gewicht += ' ↑';
+            }           
+          }
+          
           tempPlaceholder.akutellsteLeistung = aktuelleLeistung;
           this.placeholder = tempPlaceholder;
         } else {
@@ -293,7 +287,7 @@ export class NewTrainingComponent implements OnInit {
     let trainingSaveObject: TrainingSaveObject = new TrainingSaveObject();
     trainingSaveObject.comment = training.comment;
     trainingSaveObject.date = training.date;
-    trainingSaveObject.gewicht = training.gewicht;
+    trainingSaveObject.gewicht = this.entfernePunktAusDezimalzahl(training.gewicht);
     if(training.id != undefined || training.id != null){
       trainingSaveObject.id = training.id;
     }
@@ -304,4 +298,11 @@ export class NewTrainingComponent implements OnInit {
 
     return trainingSaveObject;
   } 
+
+  private entfernePunktAusDezimalzahl(dezZahl : string | null): string | null {
+    if(dezZahl && dezZahl.includes(',')){
+      return dezZahl.replace(',', '.');  
+    }
+    return dezZahl;
+  }
 }
