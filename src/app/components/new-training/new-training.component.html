@@ -1,22 +1,82 @@
-<div>
-  <div class="recept-title">Neues Training</div>
-  <div><button routerLink="../" class="btn btn-warning">Zurück</button></div>
-
-  <div class="new-recept-zutaten-container">
+<div class="main-container">
+  <div class="header-item-row">
+    <div></div>
+    <div class="header-item-title">Neues Training</div>
+    <div class="header-item-button-div">
+      <button routerLink="../" class="btn btn-warning">Zurück</button>
+    </div>
+  </div>
+  <div class="neues-training-alle-uebungen-container">
     <form [formGroup]="formUebung">
       <div>
-        <div><div>Übung</div><div>Gewicht</div><div>Wiederholungen</div><div>Kommentar</div></div>
-        <div *ngFor="let uebung of uebungenArray; let elementIndex = index;" class="new-recept-zutaten" >
-          <div><select class="select-box" name="uebungenMenu" formControlName="uebungName{{elementIndex}}" (change)="changeUebung(elementIndex)">
-            <option value="" disabled selected>Bitte auswählen...</option>
-            <option *ngFor="let item of uebungenOptionen" [disabled]="checkOptionDisabled(item)" value={{item.id}}>{{item.uebung}}</option>
-          </select></div>          
-          <div><input class="form-control" type="text" (change)="addNewUebung(elementIndex)" id='{{elementIndex}}' placeholder={{placeholder?.akutellsteLeistung?.gewicht}} formControlName='gewicht{{elementIndex}}'></div>
-          <div><input class="form-control" type="text" (change)="addNewUebung(elementIndex)" placeholder={{placeholder?.akutellsteLeistung?.wiederholungen}} formControlName='wiederholungen{{elementIndex}}'></div>
-          <div><input class="form-control" type="text" (change)="addNewUebung(elementIndex)" formControlName='comment{{elementIndex}}'></div>
-          <div><button class="btn btn-danger" id='removeFCButton{{elementIndex}}' (click)="deleteUebung(elementIndex)">-</button></div>
+        <div class="neues-training-alle-uebungen-ueberschrift">
+          <div class="text-center">Übung</div>
+          <div class="text-center">Gewicht</div>
+          <div class="text-center">Wiederholungen</div>
+        </div>
+        <div
+          *ngFor="let uebung of uebungenArray; let elementIndex = index"
+          class="neues-training-alle-uebungen"
+        >
+          <div class="drop-down-box">
+            <select
+              class="select-box drop-down-box"
+              name="uebungenMenu"
+              formControlName="uebungName{{ elementIndex }}"
+              (change)="changeUebung(elementIndex)"
+            >
+              <option value="" disabled selected>Bitte auswählen...</option>
+              <option
+                *ngFor="let item of uebungenOptionen"
+                [disabled]="checkOptionDisabled(item)"
+                value="{{ item.id }}"
+              >
+                {{ item.uebung }}
+              </option>
+            </select>
+          </div>
+          <div>
+            <input
+              class="form-control text-box"
+              type="text"
+              (change)="addNewUebung(elementIndex)"
+              id="{{ elementIndex }}"
+              placeholder="{{ placeholder?.akutellsteLeistung?.gewicht }}"
+              formControlName="gewicht{{ elementIndex }}"
+            />
+          </div>
+          <div>
+            <input
+              class="form-control text-box"
+              type="text"
+              (change)="addNewUebung(elementIndex)"
+              placeholder="{{
+                placeholder?.akutellsteLeistung?.wiederholungen
+              }}"
+              formControlName="wiederholungen{{ elementIndex }}"
+            />
+          </div>
+          <!--
+          <div>
+            <input
+              class="form-control"
+              type="text"
+              (change)="addNewUebung(elementIndex)"
+              formControlName="comment{{ elementIndex }}"
+            />
+          </div>
+          -->
+          <div>
+            <button
+              class="btn btn-danger text-box"
+              id="removeFCButton{{ elementIndex }}"
+              (click)="deleteUebung(elementIndex)"
+            >
+              -
+            </button>
+          </div>
         </div>
       </div>
     </form>
-
+  </div>
 </div>

@@ -1,32 +1,66 @@
 /* You can add global styles to this file, and also import other style files */
 
 .main-container {
-  padding-left: 1rem;
+  padding-left: 0.5rem;
 }
-
+/*
 .app-container {
   font-weight: 300;
   min-height: 35rem;
 
 }
-
+*/
 .main-container{
   max-width: 25rem;
 }
 
-.einzelnes-set {
+.header-item-row {
+  display: grid;
+  grid-template-columns: [first] 25% [second] 50% [third] 25%;
+  min-width: 25rem;
+  width: 25rem;
+  padding: 0;
+}
+
+.header-item-title {
+  text-align: center;
+  /* padding-top: 7px; */
+  grid-column-start: 2;
+  grid-column-end: 2;
+  font-weight: 700;
+}
+
+.header-item-button-div {
+  text-align: right;
+  grid-column-start: 3;
+  grid-column-end: 3;
+}
+
+.neues-training-alle-uebungen-ueberschrift {
   display: grid;  
-  /* grid-template-columns: 1fr 6fr 2fr 2fr 5fr;   */
-  grid-template-columns: 3rem 16rem 6rem 12rem 10rem;
+  grid-template-columns: 16rem 6rem 13rem  3rem;
   column-gap: 0.3rem;
   padding-bottom: 0.5rem;
 }
 
-.einzelnes-set-neu {
+.neues-training-alle-uebungen {
   display: grid;  
-  /* grid-template-columns: 1fr 6fr 2fr 2fr 5fr;   */
-  grid-template-columns: 16rem 6rem 12rem 10rem;
+  grid-template-columns: 16rem 6rem 13rem 3rem;
   column-gap: 0.3rem;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.5rem; 
+}
+
+.drop-down-box {
+  height: 3rem;
+  width: 16rem;
+}
+
+.text-box {
+  height: 3rem;
+}
+
+.neues-training-alle-uebungen-container {
+  padding-top: 5rem;
+  max-width: 25rem;
 }
 
