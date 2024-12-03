@@ -42,6 +42,11 @@ export class TrainingResponse {
   data : Training[] = [];
 }
 
+export class AkutellsteLeistungResponse {
+  status : string | null = null;
+  data: AkutellsteLeistung | null = null;
+}
+
 export class Training {
   id : number | null = null;
   user : User | null = null;
@@ -53,7 +58,6 @@ export class Training {
   comment : string | null = null;
 }
 
-
 export class TrainingSaveObject {
   id : number | null = null;
   user : number | null = null;
@@ -63,10 +67,6 @@ export class TrainingSaveObject {
   wiederholungen : string | null = null;
   comment : string | null = null;
 }
-
-
-
-
 
 export class TrainingAlt {
   id : number | null = null;

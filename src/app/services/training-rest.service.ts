@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AkutellsteLeistung, Training, TrainingResponse, TrainingSaveObject, TrainingsEinheit, TrainingsSet, Uebung, User } from '../classes/trainingClasses';
+import { AkutellsteLeistung, AkutellsteLeistungResponse, Training, TrainingResponse, TrainingSaveObject, TrainingsEinheit, TrainingsSet, Uebung, User } from '../classes/trainingClasses';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,19 @@ export class TrainingRestService {
     return this.http.post<TrainingSaveObject>(this.API_URL + '/trainingViewset', training);
   }
 
+  public getLatestGewichtForUebungNew(userId: number, uebungId: number) : Observable<AkutellsteLeistungResponse> {
+    let string = this.API_URL + '/letztesGewicht/' + userId + '/' + uebungId;
+    console.log('query: ', string)
+    return this.http.get<AkutellsteLeistungResponse>(this.API_URL + '/latestGewichtWiederholungen/' + userId + '/' + uebungId);
+  }     
 
+  public updateTraining(training: TrainingSaveObject): Observable<TrainingSaveObject>{
+    return this.http.put<TrainingSaveObject>(this.API_URL + '/trainingViewset/' + training.id, training);
+  }
+
+  public deleteTraining(trainingId: number){
+    return this.http.delete<Training>(this.API_URL + '/trainingViewset/'+ trainingId);
+  }
   // **** Alte Methoden ****
   public getTrainingsEinheitenByUserId(id : number): Observable<TrainingsEinheit[]>{
     return this.http.get<TrainingsEinheit[]>(this.API_URL + '/getTrainingsEinheitenByUserId/' + id);
@@ -52,8 +64,6 @@ export class TrainingRestService {
   public saveTrainingsEinheit(trainingsEinheit: TrainingsEinheit): Observable<TrainingsEinheit>{
     return this.http.post<TrainingsEinheit>(this.API_URL + '/saveTrainingsEinheit', trainingsEinheit);
   }
-
-
   
   public deleteTrainingSet(trainingsEinheit: number, uebungsNumber: number){
     return this.http.delete<TrainingsSet>(this.API_URL + '/deleteTrainingSetByTrainingsEinheitUndUebung/'+trainingsEinheit+'/'+uebungsNumber);

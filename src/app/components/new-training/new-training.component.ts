@@ -102,16 +102,17 @@ export class NewTrainingComponent implements OnInit {
       this.uebungenArray[elementIndex].wiederholungen = wiederholungen;
       this.uebungenArray[elementIndex].comment = comment;
 
-      /*
       if(this.checkIfFieldsAreFilled(elementIndex) && this.trainingArray != null){
-        this.trainingsEinheit.trainingsSets = this.uebungenArray;
-        if(!this.checkIfUebungenAreComplete(this.trainingsEinheit.trainingsSets)){ 
-          return; 
+        if(!this.checkIfUebungenAreComplete(this.trainingArray)){ return; }
+        let uebung : Uebung | null = this.getUebungById(uebungId);
+        this.trainingArray[elementIndex].uebung = uebung;
+        if(this.trainingArray[elementIndex].uebung && this.userId){
+          let trainingSaveObject :TrainingSaveObject = this.createDto(this.uebungenArray[elementIndex]);
+          this.trainingRestService.updateTraining(trainingSaveObject).subscribe(data => {console.log('Update Successful')});    
         }
-        this.trainingRestService.saveTrainingsEinheit(this.trainingsEinheit).subscribe(data => {this.trainingsEinheit = data;
-        });
-      } 
-      */
+        
+      }
+      
       return;
     }
 
@@ -161,7 +162,6 @@ export class NewTrainingComponent implements OnInit {
     
     let uebungToSave : Training = this.uebungenArray[currentLastPosition];
     
-   
     console.log(uebungToSave)
     if(uebungToSave != null && uebungToSave != undefined && uebungToSave.id == undefined){
       let user = new User();
@@ -216,15 +216,15 @@ export class NewTrainingComponent implements OnInit {
     return true;
   }
 
-  /*
+  
   deleteUebung(index : number){
-    let uebung : TrainingsSet = this.uebungenArray[index];
-    this.trainingRestService.deleteTrainingSet(this.trainingsEinheit!.idTrainingeinheit!, uebung.uebung?.id!).subscribe(data => {
-      this.uebungenArray.splice(index, 1);
-      this.trainingsEinheit!.trainingsSets = this.uebungenArray;
-    });
+    let uebung : Training = this.uebungenArray[index];
+    if(uebung && uebung.id){
+      this.trainingRestService.deleteTraining(uebung.id).subscribe(data => {
+        this.uebungenArray.splice(index, 1);
+      });
+    }
   }
-  */
 
   getLatestGewichtForUebung(userId: number, uebungId: number){
     this.trainingRestService.getLatestGewichtForUebung(userId, uebungId).subscribe(x => {
@@ -232,34 +232,42 @@ export class NewTrainingComponent implements OnInit {
     });
   }
 
-  /*
   changeUebung(index: number){
     // hole placeholder
     let uebungId : number = this.formUebung.get('uebungName' + index)?.value;
-
+    let uebungIdNumber : number = +uebungId;
     if(this.userId != null && uebungId != null && this.uebungenArray.length-1 === index){
-      //let uebungId : number = this.uebungenArray[index].uebung?.idUebung!
-      this.trainingRestService.getLatestGewichtForUebung(this.userId, uebungId).subscribe(data => {
+
+      this.trainingRestService.getLatestGewichtForUebungNew(this.userId, uebungIdNumber).subscribe(data => {
         let tempPlaceholder : Placeholder = new Placeholder();
         tempPlaceholder.uebungId = uebungId;
-        tempPlaceholder.akutellsteLeistung = data;
-
-        this.placeholder = tempPlaceholder;
+        let aktuelleLeistung : AkutellsteLeistung = new AkutellsteLeistung()
+        // Wenn historische Daten vorhanden sind, wird placeholder gesetzt
+        if(data.data != null && data.data.gewicht != null && data.data.wiederholungen != null){
+          aktuelleLeistung.gewicht = data.data.gewicht;
+          aktuelleLeistung.wiederholungen = data.data.wiederholungen;
+          tempPlaceholder.akutellsteLeistung = aktuelleLeistung;
+          this.placeholder = tempPlaceholder;
+        } else {
+          // Falls keine Historischen Daten verfuegbar sind, wird placeholder wieder geloescht
+          this.placeholder = null;
+        }
       })
     }
-
+    // Speichere das Training falls es komplett ist
     if(this.checkIfFieldsAreFilled(index) && this.trainingArray != null){
-      //this.trainingsEinheit.trainingsSets = this.uebungenArray;
       if(!this.checkIfUebungenAreComplete(this.trainingArray)){ return; }
-
       let uebung : Uebung | null = this.getUebungById(uebungId);
       this.trainingArray[index].uebung = uebung;
-      this.trainingRestService.saveTrainingsEinheit(this.trainingsEinheit).subscribe(data => {this.trainingsEinheit = data;
-      });
+      if(this.trainingArray[index].uebung && this.userId){
+        let trainingSaveObject :TrainingSaveObject = this.createDto(this.uebungenArray[index]);
+        this.trainingRestService.updateTraining(trainingSaveObject).subscribe(data => {console.log('Update Successful')});    
+      }
+      
     }
+    
   }
-  */
-
+  
   private getUebungById(id: number) : Uebung | null{
     let uebung : Uebung = new Uebung();
     let result: Uebung[] = this.uebungenOptionen.filter(x => x.id == id);
