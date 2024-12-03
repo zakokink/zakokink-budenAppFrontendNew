@@ -15,7 +15,6 @@
           <div><input class="form-control" type="text" (change)="addNewUebung(elementIndex)" placeholder={{placeholder?.akutellsteLeistung?.wiederholungen}} formControlName='wiederholungen{{elementIndex}}'></div>
           <div><input class="form-control" type="text" (change)="addNewUebung(elementIndex)" formControlName='comment{{elementIndex}}'></div>
           <div><button class="btn btn-danger" id='removeFCButton{{elementIndex}}' (click)="deleteUebung(elementIndex)">-</button></div>
-
         </div>
       </div>
     </form>
