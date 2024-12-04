@@ -14,7 +14,13 @@ export class TrainingRestService {
   public getAllUsers(): Observable<User[]>{
     return this.http.get<User[]>(this.API_URL + '/user');
   }
+  
+  public getAlleUebungen(): Observable<Uebung[]>{
+    return this.http.get<Uebung[]>(this.API_URL + '/uebungen');
+  }
 
+
+  
   public getUserById(id : number): Observable<User>{
     return this.http.get<User>(this.API_URL + '/user/' + id);
   }
@@ -44,18 +50,26 @@ export class TrainingRestService {
   public deleteTraining(trainingId: number){
     return this.http.delete<Training>(this.API_URL + '/trainingViewset/'+ trainingId);
   }
-  // **** Alte Methoden ****
-  public getTrainingsEinheitenByUserId(id : number): Observable<TrainingsEinheit[]>{
-    return this.http.get<TrainingsEinheit[]>(this.API_URL + '/getTrainingsEinheitenByUserId/' + id);
+
+  public saveUser(user: User): Observable<User>{
+    return this.http.post<User>(this.API_URL + '/user', user);
+  }
+
+  public deleteUebung(uebungId: number){
+    return this.http.delete<Uebung>(this.API_URL + '/uebungen/'+ uebungId);
   }
 
   public saveUebung(uebung: Uebung): Observable<Uebung>{
     return this.http.post<Uebung>(this.API_URL + '/uebungen', uebung);
   }
 
-  public getAlleUebungen(): Observable<Uebung[]>{
-    return this.http.get<Uebung[]>(this.API_URL + '/uebungen');
+  
+  // **** Alte Methoden ****
+  public getTrainingsEinheitenByUserId(id : number): Observable<TrainingsEinheit[]>{
+    return this.http.get<TrainingsEinheit[]>(this.API_URL + '/getTrainingsEinheitenByUserId/' + id);
   }
+
+
 
   public getTrainingsEinheitDesHeutigenDatums(): Observable<TrainingsEinheit>{
     return this.http.get<TrainingsEinheit>(this.API_URL + '/getTrainingsEinheitDesHeutigenDatums');

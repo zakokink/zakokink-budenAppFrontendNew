@@ -1,0 +1,13 @@
+<div>
+  <div class="recept-title">Neuer User</div>
+  <div><button routerLink="../" class="btn btn-warning">Zurück</button></div>
+  <div>
+    <form [formGroup]="userFormGroup">
+      <div>
+        <label>Name: </label><br/>
+        <input required class="mx-2" type="text" id="userName" formControlName="userName">
+      </div>
+      <div><button (click)="saveUser()" class="btn btn-primary">Speichern</button></div>
+    </form>
+  </div>
+</div>

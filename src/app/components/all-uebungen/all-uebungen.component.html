@@ -1,0 +1,116 @@
+<div class="main-container">
+  <div class="header-item-row">
+    <div class="center-text-vertical header-item-button-div-left">
+    </div>
+    <div class="header-item-title center-text-vertical">Alle Übungen</div>
+    <div class="header-item-button-div-right">
+      <a routerLink="/"
+        ><button routerLink="" class="btn btn-warning">Zurück</button></a
+      >
+    </div>
+  </div>
+  <div class="neues-training-alle-uebungen-container">
+    <form [formGroup]="formUebungen">
+      <div>
+        <div class="alle-uebungen-ueberschrift">
+          <div class="text-center">Name</div>
+          <div class="text-center">Min</div>
+          <div class="text-center">Max</div>
+          <div class="text-center">Kommentar</div>
+        </div>
+
+        <div *ngFor="let uebung of uebungenArray; let elementIndex = index"
+          class="alle-uebungen"
+        >
+          <div>
+            <input
+            [readonly]="true"
+            class="form-control text-box"
+            type="text"
+            id="{{ elementIndex }}"
+            formControlName="uebung{{ elementIndex }}"
+          />
+          </div>
+          <div>
+            <input
+              [readonly]="true"
+              class="form-control text-box"
+              type="text"
+              formControlName="minWiederholungen{{ elementIndex }}"
+            />
+          </div>
+          <div>
+            <input
+              [readonly]="true"
+              class="form-control text-box"
+              type="text"
+              formControlName="maxWiederholungen{{ elementIndex }}"
+            />
+          </div>
+          <div>
+            <input
+              [readonly]="true"
+              class="form-control text-box"
+              type="text"
+              formControlName="comment{{ elementIndex }}"
+            />
+          </div>
+          <div class="">
+            <button
+              class="btn btn-danger text-box center-text-vertical"
+              id="removeFCButton{{ elementIndex }}"
+              (click)="deleteUebung(elementIndex)"
+            >
+              -
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="neue-uebung-hinzufuegen-text">Neue Übung hinzufügen</div>
+    <form class="form-neue-uebung" [formGroup]="formNeueUebung">
+
+      <div class="alle-uebungen">
+        <div>  
+          <input
+          class="form-control text-box"
+          type="text"
+          formControlName="uebung"
+        />
+        </div>
+        <div>
+          <input
+            class="form-control text-box"
+            type="text"
+            formControlName="minWiederholungen"
+          />
+        </div>
+        <div>
+          <input
+            class="form-control text-box"
+            type="text"
+            formControlName="maxWiederholungen"
+          />
+        </div>
+        <div>
+          <input
+            class="form-control text-box"
+            type="text"
+            formControlName="comment"
+          />
+        </div>
+        <div class="">
+          <button
+            class="btn btn-primary text-box center-text-vertical"
+            id="addButton"
+            (click)="addUebung()"
+          >
+            +
+          </button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+
+</div>

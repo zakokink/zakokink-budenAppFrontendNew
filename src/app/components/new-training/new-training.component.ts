@@ -22,7 +22,7 @@ export class NewTrainingComponent implements OnInit {
   public currentUser : User | null = null;
   userId : number | null = null;
 
-  constructor(private trainingRestService: TrainingRestService,private route: ActivatedRoute, private router: Router ) {
+  constructor(private trainingRestService: TrainingRestService,private route: ActivatedRoute, private router: Router) {
     this.formUebung = new FormGroup({
       uebungName0: new FormControl(''),
       gewicht0: new FormControl(''),

@@ -80,3 +80,28 @@
   
 }
 
+
+.alle-uebungen-ueberschrift {
+  display: grid;  
+  grid-template-columns: 15rem 5rem 5rem 9rem;
+  column-gap: 0.3rem;
+  padding-bottom: 0.5rem;
+  font-weight: 500; 
+}
+
+.alle-uebungen {
+  display: grid;  
+  grid-template-columns: 15rem 5rem 5rem 9rem 5rem;
+  column-gap: 0.3rem;
+  padding-bottom: 0.5rem; 
+
+}
+
+.form-neue-uebung {
+  padding-top: 1rem;
+}
+
+.neue-uebung-hinzufuegen-text {
+  padding-top: 1rem;
+
+}
