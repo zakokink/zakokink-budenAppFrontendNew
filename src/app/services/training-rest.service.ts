@@ -15,6 +15,10 @@ export class TrainingRestService {
     return this.http.get<User[]>(this.API_URL + '/user');
   }
 
+  public getUserById(id : number): Observable<User>{
+    return this.http.get<User>(this.API_URL + '/user/' + id);
+  }
+
   public getTrainingsByUserId(id : number): Observable<TrainingResponse>{
     return this.http.get<TrainingResponse>(this.API_URL + '/trainingsFuerUser/' + id);
   }

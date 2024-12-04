@@ -1,9 +1,13 @@
 <div class="main-container">
   <div class="header-item-row">
-    <div class="header-item-button-div"></div>
+    <div class="center-text-vertical header-item-button-div-left">
+      {{ currentUser?.name }}
+    </div>
     <div class="header-item-title center-text-vertical">Neues Training</div>
-    <div class="header-item-button-div">
-      <button routerLink="../" class="btn btn-warning">Zurück</button>
+    <div class="header-item-button-div-right">
+      <a routerLink="/"
+        ><button routerLink="" class="btn btn-warning">Zurück</button></a
+      >
     </div>
   </div>
   <div class="neues-training-alle-uebungen-container">

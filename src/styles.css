@@ -3,9 +3,7 @@
 .main-container {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  
-  /*max-width: 25rem;*/ 
-}
+  }
 /*
 .app-container {
   font-weight: 300;
@@ -29,7 +27,6 @@
   display: flex;
   justify-self: center;
   align-self: center;
-  vertical-align: middle;
 }
 
 .header-item-title {
@@ -40,7 +37,15 @@
   font-weight: 700;
 }
 
-.header-item-button-div {
+.header-item-button-div-left {
+  grid-column-start: 1;
+  grid-column-end: 1;
+  font-weight: 500;
+  justify-self: left;
+}
+
+
+.header-item-button-div-right {
   text-align: right;
   grid-column-start: 3;
   grid-column-end: 3;

@@ -8,6 +8,7 @@ import { AllUsersComponent } from './components/all-users/all-users.component';
 import { NewUebungComponent } from './components/new-uebung/new-uebung.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NewTrainingComponent } from './components/new-training/new-training.component';
+import { StartScreenComponent } from './components/start-screen/start-screen.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { NewTrainingComponent } from './components/new-training/new-training.com
     AllTrainingEinheitenComponent,
     AllUsersComponent,
     NewUebungComponent,
-    NewTrainingComponent
+    NewTrainingComponent,
+    StartScreenComponent
   ],
   imports: [
     BrowserModule,

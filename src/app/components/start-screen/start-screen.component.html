@@ -1,0 +1,39 @@
+<div class="main-container">
+  <div>
+    <div class="drop-down-box">
+      <select
+        #inputType
+        class="select-box drop-down-box"
+        name="usserMenu"
+        (change)="changeUser(inputType.value)"
+      >
+        <option value="" disabled selected>Bitte User auswählen...</option>
+        <option *ngFor="let item of userOptionen" value="{{ item.id }}">
+          {{ item.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div>
+    <button
+      (click)="pushStartButton()"
+      [disabled]="selectedUser == null"
+      class="btn btn-primary"
+    >
+      Start
+    </button>
+  </div>
+  <div>
+    <div>
+      <button
+        (click)="pushAlleTrainingEinheitenButton()"
+        [disabled]="selectedUser == null"
+        class="btn btn-primary"
+      >
+        Alle Training Einheiten
+      </button>
+    </div>
+    <div><button class="btn btn-primary">Uebungen</button></div>
+    <div><button class="btn btn-primary">Neuer User</button></div>
+  </div>
+</div>

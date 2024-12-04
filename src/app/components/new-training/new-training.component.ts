@@ -19,7 +19,7 @@ export class NewTrainingComponent implements OnInit {
   public uebungenOptionen: Uebung[] = [];
   public tempUebungenOptionen: Uebung[] = [];
   public trainingArray : Training[] = [];
-
+  public currentUser : User | null = null;
   userId : number | null = null;
 
   constructor(private trainingRestService: TrainingRestService,private route: ActivatedRoute, private router: Router ) {
@@ -35,24 +35,24 @@ export class NewTrainingComponent implements OnInit {
     this.userId = +this.route.snapshot.paramMap.get('id')!
     this.trainingRestService.getAlleUebungen().subscribe(data => {
       this.uebungenOptionen = data;
-      console.log('uebungenOptionen: ' , this.uebungenOptionen)
     })
    
+    if(this.userId){
+      this.trainingRestService.getUserById(this.userId).subscribe((data : User) => {
+        this.currentUser = data;
+      })
+    }
+
+
     this.trainingRestService.getTrainingsEinheitDesHeutigenDatumsFuerUser(this.userId).subscribe(
        (data : TrainingResponse) => {
-        console.log('data: ', data)
         if(data != null && data.data != null && data.data.length > 0){
           this.trainingArray = data.data;
           if(this.trainingArray  != null && this.trainingArray.length > 0){
 
             this.uebungenArray = this.trainingArray;
-            console.log('uebungenArray: ' , this.uebungenArray)
-            console.log('this.trainingArray: ', this.trainingArray)
             for(let i = 0; i<this.trainingArray.length; i++){
 
-              console.log('this.uebungenArray[i]: ', this.trainingArray[i])
-              console.log('this.uebungenArray[i].uebung: ',this.trainingArray[i].uebung )
-              console.log('this.uebungenArray[i].uebung?.name!: ', this.trainingArray[i].uebung?.uebung)
               let uebName : string = this.uebungenArray[i].uebung?.uebung!;
 
               this.formUebung.addControl('uebungName'+i, new FormControl(uebName),{});
@@ -168,7 +168,6 @@ export class NewTrainingComponent implements OnInit {
     
     let uebungToSave : Training = this.uebungenArray[currentLastPosition];
     
-    console.log(uebungToSave)
     if(uebungToSave != null && uebungToSave != undefined && uebungToSave.id == undefined){
       let user = new User();
       user.id = this.userId;
@@ -180,7 +179,7 @@ export class NewTrainingComponent implements OnInit {
       let trainingSaveObject : TrainingSaveObject = this.createDto(uebungToSave);
 
       this.trainingRestService.saveTraining(trainingSaveObject).subscribe(data => {
-        console.log(data);
+        console.log('Data saved')
       });
     }
     this.uebungenArray.push(new Training);

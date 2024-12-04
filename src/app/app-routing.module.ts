@@ -5,13 +5,15 @@ import { AllTrainingEinheitenComponent } from './components/all-training-einheit
 import { AllUsersComponent } from './components/all-users/all-users.component';
 import { NewUebungComponent } from './components/new-uebung/new-uebung.component';
 import { NewTrainingComponent } from './components/new-training/new-training.component';
+import { StartScreenComponent } from './components/start-screen/start-screen.component';
 
 
 const routes: Routes = [
   {  path: 'alleTrainingseinheiten/:id', component: AllTrainingEinheitenComponent },
   {  path: 'allUsers', component: AllUsersComponent },
   { path: 'newUebung', component: NewUebungComponent },
-  { path: 'newTraining/:id', component: NewTrainingComponent }
+  { path: 'newTraining/:id', component: NewTrainingComponent },
+  { path: '', component: StartScreenComponent}
 ];
 
 @NgModule({
