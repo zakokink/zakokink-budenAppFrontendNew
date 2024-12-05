@@ -88,6 +88,7 @@ export class AllUebungenComponent implements OnInit {
     
     this.trainingRestService.saveUebung(neueUebung).subscribe(data => {
       this.uebungenArray.push(neueUebung);
+      window.location.reload();
     });
   }
 

@@ -4,29 +4,42 @@
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   }
-/*
-.app-container {
-  font-weight: 300;
-  min-height: 35rem;
-
-}
-*/
 
 
 .header-item-row {
   padding-top: 0.5rem;
   display: grid;
   grid-template-columns: [first] 25% [second] 50% [third] 25%;
+  max-width: 39rem;
   /*min-width: 25rem;
   width: 25rem;
   */
   
 }
 
+.drei-spalten-div {
+  padding-top: 9rem;
+  display: grid;
+  grid-template-columns: [first] 15% [second] 70% [third] 15%;
+  max-width: 39rem;
+}
+
+.center-text-horizontal{
+  text-align: center;
+}
+
 .center-text-vertical {
   display: flex;
   justify-self: center;
   align-self: center;
+}
+
+.rechts-buendig {
+  text-align: right;
+}
+
+.links-buendig {
+  text-align: left;
 }
 
 .header-item-title {
@@ -103,5 +116,44 @@
 
 .neue-uebung-hinzufuegen-text {
   padding-top: 1rem;
+}
 
+.name-input-feld {
+text-align: center;
+}
+
+.label-div {
+  padding-right: 1rem;
+}
+
+.ueser-speichern-button-div {
+  padding-top: 4rem;
+  text-align: center;
+  max-width: 39rem;
+}
+
+.start-page-container {
+  max-width: 39rem;
+}
+
+.element-center {
+  text-align: center;
+  display: flex;
+  justify-self: center;
+  align-self: center;
+}
+
+.start-page-titel {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  font-weight: 700;
+}
+
+.start-page-button-div {
+  padding-top: 2rem;
+  
+}
+
+.start-button-groesse {
+  min-width: 20rem;
 }

@@ -1,6 +1,7 @@
 <div class="main-container">
-  <div>
-    <div class="drop-down-box">
+  <div class="element-center start-page-titel start-page-container">Training App</div>
+  <div class="">
+    <div class="drop-down-box element-center">
       <select
         #inputType
         class="select-box drop-down-box"
@@ -14,29 +15,29 @@
       </select>
     </div>
   </div>
-  <div>
+  <div class="element-center start-page-button-div">
     <button
       (click)="pushStartButton()"
       [disabled]="selectedUser == null"
-      class="btn btn-primary"
+      class="btn btn-primary start-button-groesse"
     >
       Start
     </button>
   </div>
   <div>
-    <div>
+    <div class="element-center start-page-button-div">
       <button
         (click)="pushAlleTrainingEinheitenButton()"
         [disabled]="selectedUser == null"
-        class="btn btn-primary"
+        class="btn btn-primary start-button-groesse"
       >
         Alle Training Einheiten
       </button>
     </div>
-    <div><button class="btn btn-primary">Uebungen</button></div>
-    <div><a routerLink="/newUser"><button class="btn btn-primary">Neuer User</button></a></div>
-    <div><a routerLink="/newUebung"><button class="btn btn-primary">Neue Übung</button></a></div>
-  
+    <div class="element-center start-page-button-div"><a routerLink="/allUebungen"><button class="btn btn-primary start-button-groesse">Übungen</button></a></div>
+    <div class="element-center start-page-button-div"><a routerLink="/newUser"><button class="btn btn-primary start-button-groesse">Neuer User</button></a></div>
+
+    
   
   </div>
 </div>

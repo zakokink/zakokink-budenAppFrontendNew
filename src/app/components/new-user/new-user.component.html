@@ -1,13 +1,26 @@
+<div class="main-container">
+  <div class="header-item-row">
+    <div class="center-text-vertical header-item-button-div-left">
+    </div>
+    <div class="header-item-title center-text-vertical">Neuer User</div>
+    <div class="header-item-button-div-right">
+      <a routerLink="/"
+        ><button routerLink="" class="btn btn-warning">Zurück</button></a
+      >
+    </div>
+  </div>
+</div>
+
 <div>
-  <div class="recept-title">Neuer User</div>
-  <div><button routerLink="../" class="btn btn-warning">Zurück</button></div>
   <div>
     <form [formGroup]="userFormGroup">
-      <div>
-        <label>Name: </label><br/>
-        <input required class="mx-2" type="text" id="userName" formControlName="userName">
+      <div class="drei-spalten-div">
+        <div></div>
+        <div class="name-input-feld"><label class="label-div">Name:</label> <input required class="mx-2" type="text" id="userName" formControlName="userName"></div>
+        <div></div>
       </div>
-      <div><button (click)="saveUser()" class="btn btn-primary">Speichern</button></div>
+  
     </form>
+    <div class="ueser-speichern-button-div"><button (click)="saveUser()" class="btn btn-primary">Speichern</button></div>
   </div>
 </div>

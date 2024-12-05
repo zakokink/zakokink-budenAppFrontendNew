@@ -9,7 +9,6 @@ import { StartScreenComponent } from './components/start-screen/start-screen.com
 import { NewUserComponent } from './components/new-user/new-user.component';
 import { AllUebungenComponent } from './components/all-uebungen/all-uebungen.component';
 
-
 const routes: Routes = [
   {  path: 'alleTrainingseinheiten/:id', component: AllTrainingEinheitenComponent },
   {  path: 'allUsers', component: AllUsersComponent },
@@ -17,7 +16,6 @@ const routes: Routes = [
   { path: 'newTraining/:id', component: NewTrainingComponent },
   { path: 'newUser', component: NewUserComponent },
   { path: 'allUebungen', component: AllUebungenComponent },
-  
   { path: '', component: StartScreenComponent}
 ];
 
