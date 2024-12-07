@@ -61,7 +61,6 @@ export class NewTrainingComponent implements OnInit {
               if(!isNaN(Number(this.trainingArray[i].gewicht)) && (Number(this.trainingArray[i].gewicht) %1 == 0)){
                 this.trainingArray[i].gewicht = String(this.math.trunc(Number(this.trainingArray[i].gewicht)));
               }
-
               this.formUebung.addControl('gewicht'+i, new FormControl(this.trainingArray[i].gewicht),{});
               this.formUebung.addControl('wiederholungen'+i, new FormControl(this.trainingArray[i].wiederholungen),{});
               this.formUebung.addControl('comment'+i, new FormControl(this.trainingArray[i].comment),{});
@@ -74,21 +73,21 @@ export class NewTrainingComponent implements OnInit {
             this.addNewUebung(null);
           } else {
             this.uebungenArray.push(new Training());
-            this.addFControl();
+            this.addFControl(this.trainingArray.length);
           }
         } else {
           this.uebungenArray.push(new Training());
-          this.addFControl();
+          this.addFControl(this.trainingArray.length);
         }
       }
     );
   }
 
-  addFControl(){
-    this.formUebung.addControl('uebungName'+this.trainingArray.length, new FormControl(''),{});
-    this.formUebung.addControl('gewicht'+this.trainingArray.length, new FormControl(''),{});
-    this.formUebung.addControl('wiederholungen'+this.trainingArray.length, new FormControl(''),{});
-    this.formUebung.addControl('comment'+this.trainingArray.length, new FormControl(''),{});
+  addFControl(index : number){
+    this.formUebung.addControl('uebungName'+index, new FormControl(''),{});
+    this.formUebung.addControl('gewicht'+index, new FormControl(''),{});
+    this.formUebung.addControl('wiederholungen'+index, new FormControl(''),{});
+    this.formUebung.addControl('comment'+index, new FormControl(''),{});
   }
 
   addNewUebung(elementIndex : number | null){
@@ -97,7 +96,6 @@ export class NewTrainingComponent implements OnInit {
       let gewicht : string = this.formUebung.get('gewicht'+elementIndex)?.value;
       let wiederholungen : string = this.formUebung.get('wiederholungen'+elementIndex)?.value;
       let comment : string = this.formUebung.get('comment'+elementIndex)?.value;
-
       let result : Uebung[] = this.uebungenOptionen.filter(x => x.id == uebungId);
       if(result.length != 1){
         return;
@@ -116,9 +114,7 @@ export class NewTrainingComponent implements OnInit {
           let trainingSaveObject :TrainingSaveObject = this.createDto(this.uebungenArray[elementIndex]);
           this.trainingRestService.updateTraining(trainingSaveObject).subscribe(data => {console.log('Update Successful')});    
         }
-        
       }
-      
       return;
     }
 
@@ -129,7 +125,6 @@ export class NewTrainingComponent implements OnInit {
     let gewicht : string = this.formUebung.get('gewicht'+currentLastPosition)?.value;
     let wiederholungen : string = this.formUebung.get('wiederholungen'+currentLastPosition)?.value;
     let comment : string = this.formUebung.get('comment'+currentLastPosition)?.value;
-
     let uebung: Uebung = new Uebung;
     uebung.id = uebungId;
 
@@ -145,11 +140,11 @@ export class NewTrainingComponent implements OnInit {
     this.uebungenArray[currentLastPosition].gewicht = gewicht;
     this.uebungenArray[currentLastPosition].wiederholungen = wiederholungen;
     this.uebungenArray[currentLastPosition].comment = comment;
-    
-    this.addFControl();
+
+    //this.addFControl();  // Wird das benoetigt???
     
     if(this.checkIfFieldsAreFilled(currentLastPosition)){
-        this.addFControl();
+        this.addFControl(this.uebungenArray.length);
         this.saveUebung(currentLastPosition);
       }
   }
@@ -158,15 +153,14 @@ export class NewTrainingComponent implements OnInit {
     let uebungId : number = this.formUebung.get('uebungName' + position)?.value;
     let gewicht : string = this.formUebung.get('gewicht' + position)?.value;
     let wiederholungen : string = this.formUebung.get('wiederholungen' + position)?.value;
-
     return uebungId != undefined &&
     gewicht.trim().length > 0 &&
     wiederholungen.trim().length > 0
   }
 
   saveUebung(currentLastPosition : number){
-    
-    let uebungToSave : Training = this.uebungenArray[currentLastPosition];
+    const position : number = currentLastPosition;
+    let uebungToSave : Training = this.uebungenArray[position];
     
     if(uebungToSave != null && uebungToSave != undefined && uebungToSave.id == undefined){
       let user = new User();
@@ -179,11 +173,11 @@ export class NewTrainingComponent implements OnInit {
       let trainingSaveObject : TrainingSaveObject = this.createDto(uebungToSave);
 
       this.trainingRestService.saveTraining(trainingSaveObject).subscribe(data => {
-        console.log('Data saved')
+        console.log('Data saved')    
       });
     }
     this.uebungenArray.push(new Training);
-     }
+  }
 
   checkIfUebungenAreComplete(trainingArray :Training[] | null) : boolean {
     if(trainingArray != null && trainingArray.length!>0){
@@ -203,12 +197,6 @@ export class NewTrainingComponent implements OnInit {
         this.uebungenArray.splice(index, 1);
       });
     }
-  }
-
-  getLatestGewichtForUebung(userId: number, uebungId: number){
-    this.trainingRestService.getLatestGewichtForUebung(userId, uebungId).subscribe(x => {
-
-    });
   }
 
   changeUebung(index: number){
