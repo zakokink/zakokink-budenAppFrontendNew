@@ -1,22 +1,53 @@
-
-<p>Alle Trainingseinheiten fuer: {{trainings[0]?.user?.name}}</p>
-
-<div>
-  
-  <div class="trainings-einheit" *ngFor="let trainingEinheit of trainingEinheitArray">
-  
-    <div>Datum: {{trainingEinheit.date}}</div>
-    <div class="einzelnes-set-neu"><div class="einzelnes-set-element">Übung</div><div class="einzelnes-set-element">Gewicht</div><div class="einzelnes-set-element">Wiederholungen</div> <div class="einzelnes-set-element">Kommentar</div>  </div>
-    <div class="trainings-einheit" *ngFor="let training of trainingEinheit.trainings">
-      
-      <div class="einzelnes-set-neu">
-        <div class="einzelnes-set-element">{{training.uebung?.uebung}}</div>
-        <div class="einzelnes-set-element">{{training.gewicht}}</div>
-        <div class="einzelnes-set-element">{{training.wiederholungen}}</div>
-        <div class="einzelnes-set-element">{{training.comment}}</div>
-      </div>
-
+<div class="main-container">
+  <div class="header-item-row">
+    <div class="center-text-vertical header-item-button-div-left">
+      {{ currentUser?.name }}
     </div>
-    <hr>
+    <div class="header-item-title center-text-vertical">Alle Trainingseinheiten</div>
+    <div class="header-item-button-div-right">
+      <a routerLink="/"
+        ><button routerLink="" class="btn btn-warning">Zurück</button></a
+      >
+    </div>
+  </div>
+
+  
+  <div class="alle-training-container" *ngFor="let trainingEinheit of trainingEinheitArray">
+  
+    <div class="alle-training-datum-div">Datum: {{trainingEinheit.date}}</div>
+    <div class="alle-training-ueberschriften">
+      <div class="text-center">Übung</div>
+      <div class="text-center">Gewicht</div>
+      <div class="text-center">Wieder-holungen</div>
+      <div class="text-center">Kom-mentar</div>
+    </div>
+  
+    <div class="training-alle-uebungen" *ngFor="let training of trainingEinheit.trainings">
+      <div class="">
+          <input
+              class="form-control text-box"
+              type="text"
+              value="{{training.uebung?.uebung}}"
+            />          
+      </div>
+      <div>
+        <input
+        class="form-control text-box"
+        type="text"
+        value="{{training.gewicht}}"/>
+      </div>
+      <div>
+        <input
+        class="form-control text-box"
+        type="text"
+        value="{{training.wiederholungen}}"/>
+      </div>
+      <div>
+        <input
+        class="form-control text-box"
+        type="text"
+        value="{{training.comment}}"/>
+      </div>
+    </div>
   </div>
 </div>

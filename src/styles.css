@@ -10,11 +10,7 @@
   padding-top: 0.5rem;
   display: grid;
   grid-template-columns: [first] 25% [second] 50% [third] 25%;
-  max-width: 39rem;
-  /*min-width: 25rem;
-  width: 25rem;
-  */
-  
+  max-width: 39rem; 
 }
 
 .drei-spalten-div {
@@ -44,7 +40,6 @@
 
 .header-item-title {
   text-align: center;
-  /* padding-top: 7px; */
   grid-column-start: 2;
   grid-column-end: 2;
   font-weight: 700;
@@ -71,12 +66,32 @@
   font-weight: 500; 
 }
 
+.alle-training-ueberschriften {
+  display: grid;  
+  grid-template-columns: 13rem 7rem 7rem  3rem;
+  column-gap: 0.3rem;
+  padding-bottom: 0.5rem;
+  /*font-weight: 300; */ 
+}
+
+.alle-training-datum-div {
+  padding-bottom: 2rem;
+  font-weight: 500; 
+}
 .neues-training-alle-uebungen {
   display: grid;  
   grid-template-columns: 13rem 6rem 11rem 3rem;
   column-gap: 0.3rem;
   padding-bottom: 0.5rem; 
 }
+
+.training-alle-uebungen {
+  display: grid;  
+  grid-template-columns: 13rem 7rem 7rem 6rem;
+  column-gap: 0.3rem;
+  padding-bottom: 0.5rem; 
+}
+
 
 .drop-down-box {
   height: 3.5rem;
@@ -96,6 +111,12 @@
 .neues-training-alle-uebungen-container {
   padding-top: 3rem;
 }
+
+.alle-training-container {
+  padding-top: 3rem;
+  padding-bottom: 5rem;
+}
+
 
 
 .alle-uebungen-ueberschrift {
