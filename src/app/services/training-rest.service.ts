@@ -12,7 +12,8 @@ export class TrainingRestService {
   //private API_URL = 'http://localhost:4230/api/1.0/restapi'
 
   //private API_URL = 'http://127.0.0.1:8000'
-  private API_URL = 'http://192.168.0.115:4236'
+  //private API_URL = 'http://192.168.0.115:4236'
+  private API_URL = 'http://80.108.240.70:4236'
   
 public getAllUsers(): Observable<User[]>{
 
